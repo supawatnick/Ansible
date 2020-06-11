@@ -35,11 +35,11 @@ ontap_cloneluns:
  - /vol/clone_svm1_lun5_vol_dest/svm1_lun5
 
 ## ESX DR
-esx_drhostname: 192.168.0.103 ##Use for >> vmware_register_vm, vmware_poweron_vm, vmware_resignature_mount_vmfs
+esx_drhostname: 192.168.0.103
 esx_drusername: root
 esx_drpassword: Netapp1!
 esx_iscsi_hba: vmhba65
-esx_drlist: ##Use for >> vmware_unmount_datastores.yaml
+esx_drlist:
  - 192.168.0.103
  - 192.168.0.104
 
@@ -51,7 +51,7 @@ inventory_drhostname:
  - 192.168.0.103
  - 192.168.0.104
 datacenter_drname: NetApp-HCI-Datacenter
-vm_drname: ##User for vmware_unregister_vm.yaml
+vm_drname:
  - vm1
  - vm2
  - vm3
