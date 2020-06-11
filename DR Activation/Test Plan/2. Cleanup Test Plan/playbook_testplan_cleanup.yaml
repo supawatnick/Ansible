@@ -1,12 +1,14 @@
 ### Install shyaml >> sudo pip install shyaml
 ### Install VMware lib >> sudo pip install pyvmomi
 ### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+### Install VMware Collection >> ansible-galaxy collection install community.vmware
 
 ---
 - hosts: localhost
   gather_facts: false
   collections:
     - netapp.ontap
+    - community.vmware
 
   vars_files:
     - vars.yaml
