@@ -1,0 +1,27 @@
+---
+- name: Create DR FlexClone
+  na_ontap_volume_clone:
+    hostname: "{{ ontap_drhostname }}"
+    username: "{{ ontap_drusername}}"
+    password: "{{ ontap_drpassword }}"
+    https: true
+    validate_certs: false
+    state: present
+    vserver: "{{ ontap_drvserver }}"
+    parent_volume: "{{ item }}"
+    name: "{{ ontap_cloneprefix + item }}"
+    space_reserve: none
+    parent_snapshot: "{{ ontap_dcsnapshot }}"
+  async: 300
+  poll: 0
+  register: _create_instances
+  with_items: "{{ ontap_drvolumes }}"
+
+- name: Wait for creation to finish
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: _jobs
+  until: _jobs.finished
+  delay: 5
+  retries: 10
+  with_items: "{{ _create_instances.results }}"

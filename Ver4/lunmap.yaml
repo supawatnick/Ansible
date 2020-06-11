@@ -1,0 +1,20 @@
+---     
+- debug:
+    msg: "{{ ontap_lunid }}"
+
+- name: Create LUN mapping
+  na_ontap_lun_map:
+    hostname: "{{ ontap_drhostname }}"
+    username: "{{ ontap_drusername }}"
+    password: "{{ ontap_drpassword }}"
+    https: true
+    validate_certs: false
+    state: present
+    initiator_group_name: "{{ ontap_initiators }}"
+    path: "{{ item }}"
+    vserver: "{{ ontap_drvserver }}" 
+    lun_id: "{{ ontap_lunid }}"
+    
+- name: Increment LUN ID
+  set_fact: ontap_lunid={{ ontap_lunid | int + 1 }}
+

@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Run shellscript show output
+      script: /usr/bin/cat /root/ansible/ansible-nix/Ver3/logo
+      register: out
+
+    - debug: var=out.stdout_lines
+...

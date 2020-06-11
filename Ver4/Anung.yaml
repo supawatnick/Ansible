@@ -1,0 +1,163 @@
+---
+- name: Create Clone & Map the Clone LUN
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - ontap_vars.yaml
+
+  vars:
+    login: &login
+      hostname: "{{ ontap_hostname }}"
+      username: "{{ ontap_username}}"
+      password: "{{ ontap_password }}"
+      https: true
+      validate_certs: false
+      
+    drlogin: &drlogin
+      hostname: "{{ ontap_drhostname }}"
+      username: "{{ ontap_drusername}}"
+      password: "{{ ontap_drpassword }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: Create CG Snapshot
+      na_ontap_cg_snapshot:
+        state: present
+        vserver: "{{ ontap_vserver }}"
+        snapshot: "{{ ontap_snapshot }}"
+        volumes: "{{ ontap_volumes }}"
+        snapmirror_label: "{{ ontap_snapshot }}"
+        <<: *login
+      register: result
+      retries: 10
+      delay: 11
+      until: result is changed
+
+    - name: Perform snapmirror update
+      shell: /netapp/snapmirrorupdate.sh >> /netapp/log/snapmirrorupdate.log
+
+    - name: Perform snapmirror update
+      shell: /netapp/snapmirrorupdate.sh >> /netapp/log/snapmirrorupdate.log
+      
+    - name: Set ClonePrefix Clone 1
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix1 }}
+
+    - include_tasks: createflexclone.yaml
+
+    - name: Set ClonePrefix Clone 2
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix2 }}
+
+    - include_tasks: createflexclone.yaml
+
+    - name: Set ClonePrefix Clone 3
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix3 }}
+
+    - include_tasks: createflexclone.yaml
+
+    - name: Set ClonePrefix Clone 4
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix4 }}
+
+    - include_tasks: createflexclone.yaml
+
+    - name: Set ClonePrefix Clone 5
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix5 }}
+
+    - include_tasks: createflexclone.yaml
+
+    - name: Change Serial CL 1 Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/changeserial-cl1.sh >> /netapp/log/changeserial.log
+
+    - name: Change Serial CL 2 Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/changeserial-cl2.sh >> /netapp/log/changeserial.log
+
+    - name: Change Serial CL 3 Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/changeserial-cl3.sh >> /netapp/log/changeserial.log
+
+    - name: Change Serial CL 4 Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/changeserial-cl4.sh >> /netapp/log/changeserial.log
+
+    - name: Change Serial CL 5 Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/changeserial-cl5.sh >> /netapp/log/changeserial.log
+
+    - name: Set IGROUP 1
+      set_fact: ontap_initiators={{ ontap_initiators1 }}
+
+    - include_tasks: lunmap.yaml
+      with_items: "{{ ontap_cloneluns1 }}"
+
+    - name: Set IGROUP 2
+      set_fact: ontap_initiators={{ ontap_initiators2 }}
+
+    - name: Set Starting LUNID
+      set_fact: ontap_lunid=0
+
+    - include_tasks: lunmap.yaml
+      with_items: "{{ ontap_cloneluns2 }}"
+
+    - name: Set IGROUP 3
+      set_fact: ontap_initiators={{ ontap_initiators3 }}
+
+    - name: Set Starting LUNID
+      set_fact: ontap_lunid=0
+
+    - include_tasks: lunmap.yaml
+      with_items: "{{ ontap_cloneluns3 }}"
+
+    - name: Set IGROUP 4
+      set_fact: ontap_initiators={{ ontap_initiators4 }}
+
+    - name: Set Starting LUNID
+      set_fact: ontap_lunid=0
+
+    - include_tasks: lunmap.yaml
+      with_items: "{{ ontap_cloneluns4 }}"
+
+    - name: Set IGROUP 5
+      set_fact: ontap_initiators={{ ontap_initiators5 }}
+
+    - name: Set Starting LUNID
+      set_fact: ontap_lunid=0
+
+    - include_tasks: lunmap.yaml
+      with_items: "{{ ontap_cloneluns5 }}"
+
+    - name: Start DB CL 1; Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/mountandstartdb-cl1.sh >> /netapp/log/mountandstartdb-cl1.log 2>&1 &
+      async: 600
+      poll: 0
+      register: dbtask
+      ignore_errors: yes
+
+    - name: Start DB CL 2; Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/mountandstartdb-cl2.sh >> /netapp/log/mountandstartdb-cl2.log 2>&1 &
+      async: 600
+      poll: 0
+      register: dbtask
+      ignore_errors: yes
+
+    - name: Start DB CL 3; Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/mountandstartdb-cl3.sh >> /netapp/log/mountandstartdb-cl3.log 2>&1 &
+      async: 600
+      poll: 0
+      register: dbtask
+      ignore_errors: yes
+
+    - name: Start DB CL 4; Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/mountandstartdb-cl4.sh >> /netapp/log/mountandstartdb-cl4.log 2>&1 &
+      async: 600
+      poll: 0
+      register: dbtask
+      ignore_errors: yes
+
+    - name: Start DB  CL 5; Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: /netapp/mountandstartdb-cl5.sh >> /netapp/log/mountandstartdb-cl5.log 2>&1 &
+      async: 600
+      poll: 0
+      register: dbtask
+      ignore_errors: yes

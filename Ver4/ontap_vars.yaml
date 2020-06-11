@@ -1,0 +1,85 @@
+## ansible 2.9
+## ansible-galaxy collection install netapp.ontap
+## https://galaxy.ansible.com/netapp/ontap
+ontap_hostname: 192.168.0.110
+ontap_username: admin
+ontap_password: Netapp1!
+ontap_snapshot: cg-snapshot
+ontap_vserver: svm1
+##DR
+ontap_drhostname: 192.168.0.110
+ontap_drusername: admin
+ontap_drpassword: Netapp1!
+ontap_drvserver: svm2
+###
+ontap_initiators1: drcmd1
+ontap_cloneprefix1: cl1cg_
+ontap_initiators2: drcmd2
+ontap_cloneprefix2: cl2cg_
+ontap_initiators3: clmandiri1
+ontap_cloneprefix3: cl3cg_
+ontap_initiators4: clmandiri2
+ontap_cloneprefix4: cl4cg_
+ontap_initiators5: clmandiri3
+ontap_cloneprefix5: cl5cg_
+ontap_lunid: 0
+ontap_volumes:
+ - R910A_MP_archive01
+ - R910A_MP_ctrlfile
+ - R910A_MP_datafile1
+ - R910A_MP_datafile2
+ - R910A_MP_datafile3
+ - R910A_MP_datafile4
+ - R910A_MP_index
+ - R910A_MP_logfile
+ - R910A_MP_undo
+ontap_cloneluns1:
+ - /vol/cl1cg_R910A_MP_archive01/R910A_MP_ctrlfile
+ - /vol/cl1cg_R910A_MP_datafile1/R910A_MP_datafile1
+ - /vol/cl1cg_R910A_MP_index/R910A_MP_index
+ - /vol/cl1cg_R910A_MP_archive01/R910A_MP_logfile
+ - /vol/cl1cg_R910A_MP_undo/R910A_MP_undo
+ - /vol/cl1cg_R910A_MP_datafile2/R910A_MP_datafile2
+ - /vol/cl1cg_R910A_MP_archive01/R910A_MP_archive01
+ - /vol/cl1cg_R910A_MP_datafile3/R910A_MP_datafile3
+ - /vol/cl1cg_R910A_MP_datafile4/R910A_MP_datafile4
+ontap_cloneluns2:
+ - /vol/cl2cg_R910A_MP_archive01/R910A_MP_ctrlfile
+ - /vol/cl2cg_R910A_MP_datafile1/R910A_MP_datafile1
+ - /vol/cl2cg_R910A_MP_index/R910A_MP_index
+ - /vol/cl2cg_R910A_MP_archive01/R910A_MP_logfile
+ - /vol/cl2cg_R910A_MP_undo/R910A_MP_undo
+ - /vol/cl2cg_R910A_MP_datafile2/R910A_MP_datafile2
+ - /vol/cl2cg_R910A_MP_archive01/R910A_MP_archive01
+ - /vol/cl2cg_R910A_MP_datafile3/R910A_MP_datafile3
+ - /vol/cl2cg_R910A_MP_datafile4/R910A_MP_datafile4
+ontap_cloneluns3:
+ - /vol/cl3cg_R910A_MP_archive01/R910A_MP_ctrlfile
+ - /vol/cl3cg_R910A_MP_datafile1/R910A_MP_datafile1
+ - /vol/cl3cg_R910A_MP_index/R910A_MP_index
+ - /vol/cl3cg_R910A_MP_archive01/R910A_MP_logfile
+ - /vol/cl3cg_R910A_MP_undo/R910A_MP_undo
+ - /vol/cl3cg_R910A_MP_datafile2/R910A_MP_datafile2
+ - /vol/cl3cg_R910A_MP_archive01/R910A_MP_archive01
+ - /vol/cl3cg_R910A_MP_datafile3/R910A_MP_datafile3
+ - /vol/cl3cg_R910A_MP_datafile4/R910A_MP_datafile4
+ontap_cloneluns4:
+ - /vol/cl4cg_R910A_MP_archive01/R910A_MP_ctrlfile
+ - /vol/cl4cg_R910A_MP_datafile1/R910A_MP_datafile1
+ - /vol/cl4cg_R910A_MP_index/R910A_MP_index
+ - /vol/cl4cg_R910A_MP_archive01/R910A_MP_logfile
+ - /vol/cl4cg_R910A_MP_undo/R910A_MP_undo
+ - /vol/cl4cg_R910A_MP_datafile2/R910A_MP_datafile2
+ - /vol/cl4cg_R910A_MP_archive01/R910A_MP_archive01
+ - /vol/cl4cg_R910A_MP_datafile3/R910A_MP_datafile3
+ - /vol/cl4cg_R910A_MP_datafile4/R910A_MP_datafile4
+ontap_cloneluns5:
+ - /vol/cl5cg_R910A_MP_archive01/R910A_MP_ctrlfile
+ - /vol/cl5cg_R910A_MP_datafile1/R910A_MP_datafile1
+ - /vol/cl5cg_R910A_MP_index/R910A_MP_index
+ - /vol/cl5cg_R910A_MP_archive01/R910A_MP_logfile
+ - /vol/cl5cg_R910A_MP_undo/R910A_MP_undo
+ - /vol/cl5cg_R910A_MP_datafile2/R910A_MP_datafile2
+ - /vol/cl5cg_R910A_MP_archive01/R910A_MP_archive01
+ - /vol/cl5cg_R910A_MP_datafile3/R910A_MP_datafile3
+ - /vol/cl5cg_R910A_MP_datafile4/R910A_MP_datafile4
