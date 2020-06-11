@@ -17,14 +17,3 @@
       delegate_to: localhost
       register: deploy
 
-### Un-register VM
-    - name: Remove a virtual machine
-      vmware_guest:
-        hostname: "{{ vcenter_drhostname }}"
-        username: "{{ vcenter_drusername }}"
-        password: "{{ vcenter_drpassword }}"
-        validate_certs: no
-        name: "{{ vm_drname }}"
-        state: absent
-      delegate_to: localhost
-
