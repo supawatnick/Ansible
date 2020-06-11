@@ -33,6 +33,7 @@
         username: "{{ ontap_dcusername }}"
         password: "{{ ontap_dcpassword }}"
         hostname: "{{ ontap_dchostname }}"
+        use_rest: Always
       with_items: "{{ ontap_dcvolumes }}"
 
 ...
