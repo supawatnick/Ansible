@@ -50,12 +50,16 @@
 ### Unmount Datastores
     - name: Remove/Umount Datastores from a ESXi
       vmware_host_datastore:
-          hostname: "{{ vcenter_drhostname }}"
-          username: "{{ vcenter_drusername }}"
-          password: "{{ vcenter_drpassword }}"
-          datastore_name: "{{ item }}"
-          state: absent
-      with_items: "{{ clone_datastore }}"
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        datastore_name: "{{ item.1 }}"
+        esxi_hostname: "{{ item.0 }}"
+        state: absent
+      with_nested:
+        - "{{ inventory_drhostname }}"
+        - "{{ clone_datastore }}"
       delegate_to: localhost
 
 ### Delete Clone LUNs on DR ONTAP, if using NAS volumes add comments on this part

@@ -1,4 +1,3 @@
----
 - name: Remove/Umount Datastores from a ESXi
   vmware_host_datastore:
     hostname: "{{ vcenter_drhostname }}"
