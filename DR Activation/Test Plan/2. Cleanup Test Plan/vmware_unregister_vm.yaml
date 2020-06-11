@@ -8,4 +8,4 @@
     name: "{{ item }}"
     state: absent
   with_items: "{{ vm_drname }}"
-  delegate_to: localhost
+#  delegate_to: localhost

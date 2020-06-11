@@ -8,5 +8,5 @@
     name: "{{ item }}"
     state: powered-off
   with_items: "{{ vm_drname }}"
-  delegate_to: localhost
-  register: deploy
+#  delegate_to: localhost
+#  register: deploy
