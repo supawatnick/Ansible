@@ -14,4 +14,15 @@
         state: powered-off
       delegate_to: localhost
       register: deploy
+
+    - name: Delete an ESXi VM Guest
+      vsphere_guest:
+        vcenter_hostname: vc1.demo.netapp.com
+        validate_certs: no
+        username: administrator@vsphere.local
+        password: Netapp1!
+        guest: vm1
+        state: absent
+        force: yes
+
 ...
