@@ -14,6 +14,7 @@
           password: "{{ vcenter_drpassword }}"
           validate_certs: no
           datastore_name: "{{ item }}"
+          esxi_hostname: '{{ inventory_drhostname }}'
           state: absent
       with_items: "{{ clone_datastore }}"
       delegate_to: localhost
