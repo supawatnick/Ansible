@@ -1,0 +1,9 @@
+---
+- name: Remove/Umount Datastores from a ESXi
+  vmware_host_datastore:
+      hostname: "{{ inventory_drhostname }}"
+      username: "{{ esx_drusername }}"
+      password: "{{ esx_drlist }}"
+      datastore_name: "{{ clone_datastore }}"
+      state: absent
+  delegate_to: localhost

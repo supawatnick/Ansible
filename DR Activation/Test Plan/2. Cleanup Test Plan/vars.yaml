@@ -1,0 +1,61 @@
+##DC
+ontap_dchostname: 192.168.0.110
+ontap_dcusername: admin
+ontap_dcpassword: Netapp1!
+ontap_dcsnapshot: ansible_snapshot
+ontap_dcvserver: svm1
+ontap_dcvolumes:
+ - svm1_lun1_vol
+ - svm1_lun2_vol
+ - svm1_lun3_vol
+ - svm1_lun4_vol
+ - svm1_lun5_vol
+
+##DR
+ontap_drhostname: 192.168.0.110
+ontap_drusername: admin
+ontap_drpassword: Netapp1!
+ontap_drvserver: svm2
+ontap_drvolumes:
+ - svm1_lun1_vol_dest
+ - svm1_lun2_vol_dest
+ - svm1_lun3_vol_dest
+ - svm1_lun4_vol_dest
+ - svm1_lun5_vol_dest
+ontap_initiators: vmwaredr
+ontap_lunid: 10
+
+###Clone
+ontap_cloneprefix: clone_
+ontap_cloneluns:
+ - /vol/clone_svm1_lun1_vol_dest/svm1_lun1
+ - /vol/clone_svm1_lun2_vol_dest/svm1_lun2
+ - /vol/clone_svm1_lun3_vol_dest/svm1_lun3
+ - /vol/clone_svm1_lun4_vol_dest/svm1_lun4
+ - /vol/clone_svm1_lun5_vol_dest/svm1_lun5
+
+## ESX DR
+esx_drhostname: 192.168.0.103 ##Use for >> vmware_register_vm, vmware_poweron_vm, vmware_resignature_mount_vmfs
+esx_drusername: root
+esx_drpassword: Netapp1!
+esx_iscsi_hba: vmhba65
+esx_drlist: ##Use for >> vmware_unmount_datastores.yaml
+ - 192.168.0.103
+ - 192.168.0.104
+
+## vCenter DR
+vcenter_drhostname: vc1.demo.netapp.com
+vcenter_drusername: administrator@vsphere.local
+vcenter_drpassword: Netapp1!
+inventory_drhostname:
+ - 192.168.0.103
+ - 192.168.0.104
+datacenter_drname: NetApp-HCI-Datacenter
+vm_drname: ##User for vmware_unregister_vm.yaml
+ - vm1
+ - vm2
+ - vm3
+ - vm4
+ - vm5
+
+

@@ -54,12 +54,14 @@
     - include_tasks: vmware_rescan_hba.yaml
 
 ## Comment task "Mount NFS datastores" incase using SAN
-    - name: Mount NFS datastores
-      include_tasks: vmware_mount_nfs.yaml
+#    - name: Mount NFS datastores
+#      include_tasks: vmware_mount_nfs.yaml
 
+## Register VMs
     - name: Register VMs
       shell: ./vmware_register_vm.sh >> ./vmware_register_vm.sh.log
 
+## Poweron VMs
     - name: Poweron VMs
       shell: ./vmware_poweron_vm.sh >> ./vmware_poweron_vm.log
 ...

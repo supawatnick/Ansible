@@ -1,0 +1,38 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - vars.yaml
+
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername}}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+### Power off VMs 
+    - name: Set the state of a virtual machine to poweroff
+    - include_tasks: vmware_poweroff_vm.yaml
+
+### Un-register VM
+    - name: Unregister VMs
+    - include_tasks: vmware_unregister_vm.yaml
+
+### Unmount Datastores
+    - name: Unmount Datastores
+    - include_tasks: vmware_unmount_datastores.yaml
+
+
+
+
+...
