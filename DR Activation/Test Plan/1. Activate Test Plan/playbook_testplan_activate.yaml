@@ -32,8 +32,8 @@
 ## Perform SnapMirror Update at DR
     - name: Perform snapmirror update
       shell: ontap_snapmirror_update.sh
-      register: out
-    - debug: var=out.stdout_lines      
+#      register: out
+#    - debug: var=out.stdout_lines      
 
 ## Perform FlexClone at DR
     - name: Set ClonePrefix Clone
