@@ -1,0 +1,17 @@
+---
+- name: Mount NFS datastores to ESXi
+  vmware_host_datastore:
+      hostname: '{{ vcenter_drhostname }}'
+      username: '{{ vcenter_drusername }}'
+      password: '{{ vcenter_drpassword }}'
+      datastore_name: '{{ item.name }}'
+      datastore_type: '{{ item.type }}'
+      nfs_server: '{{ item.server }}'
+      nfs_path: '{{ item.path }}'
+      nfs_ro: no
+      esxi_hostname: '{{ inventory_drhostname }}'
+      state: present
+  delegate_to: localhost
+  loop:
+      - { 'name': 'NasDS_vol01', 'server': 'nas01', 'path': '/mnt/vol01', 'type': 'nfs'}
+      - { 'name': 'NasDS_vol02', 'server': 'nas01', 'path': '/mnt/vol02', 'type': 'nfs'}

@@ -1,0 +1,64 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - vars.yaml
+
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername}}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: Create Snapshot at DC
+      na_ontap_cg_snapshot:
+        state: present
+        vserver: "{{ ontap_dcvserver }}"
+        snapshot: "{{ ontap_dcsnapshot }}"
+        volumes: "{{ ontap_dcvolumes }}"
+        snapmirror_label: "{{ ontap_dcsnapshot }}"
+        <<: *dclogin
+
+    - name: Perform snapmirror update
+      shell: snapmirrorupdate.sh
+      register: out
+    - debug: var=out.stdout_lines      
+
+    - name: Set ClonePrefix Clone
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix }}
+    - include_tasks: ontap_create_flexclone.yaml
+
+## Comment task "Map Clone LUNs to IGROUP" incase using NAS
+    - name: Map Clone LUNs to IGROUP
+      set_fact: ontap_initiators={{ ontap_initiators }}
+    - include_tasks: ontap_lun_map.yaml
+      with_items: "{{ ontap_cloneluns }}"
+
+## Comment task "Resignature and mount VMFS" incase using NAS
+    - name: Resignature and mount VMFS
+      shell: vmware_resignature_mount_vmfs.sh >> vmware_resignature_mount_vmfs
+
+## Comment task "Rescan HBA all ESXi in DR Cluster" incase using NAS
+    - include_tasks: vmware_rescan_hba.yaml
+      delegate_to: localhost
+
+## Comment task "Mount NFS datastores" incase using SAN
+    - name: Mount NFS datastores
+      include_tasks: vmware_mount_nfs.yaml
+
+    - name: Register VMs
+      shell: vmware_register_vm.sh >> vmware_register_vm.sh.log
+
+    - name: Poweron VMs
+      shell: vmware_poweron_vm.sh >> vmware_poweron_vm.log
+...

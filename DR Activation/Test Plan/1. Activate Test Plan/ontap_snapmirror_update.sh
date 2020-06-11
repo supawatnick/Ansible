@@ -17,7 +17,7 @@ COUNT=1
 while [ $COUNT -le $LOOPS ]
 do
 VOL_DEST=`head -$COUNT $FILEIN |tail -1|awk '{print $1}'`  ## Put Volume dest to VOL_DEST
-echo ssh $ontap_drusername@$ontap_drhostname "snapmirror update $ontap_drvserver:$VOL_DEST"
+ssh $ontap_drusername@$ontap_drhostname "snapmirror update $ontap_drvserver:$VOL_DEST"
 sleep 3
 (( COUNT++ ))
 done

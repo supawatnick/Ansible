@@ -16,16 +16,25 @@ ontap_drvserver: svm2
 ontap_drvolumes:
  - svm1_lun1_vol_dest
  - svm1_lun2_vol_dest
-ontap_initiators1: vmwaredr
+ontap_initiators: vmwaredr
 ontap_lunid: 10
 
 ###Clone
-ontap_cloneprefix1: clone1_
-ontap_cloneluns1:
- - /vol/clone1_svm1_lun1_vol_dest/svm1_lun1
- - /vol/clone1_svm1_lun2_vol_dest/svm1_lun2
+ontap_cloneprefix: clone_
+ontap_cloneluns:
+ - /vol/clone_svm1_lun1_vol_dest/svm1_lun1
+ - /vol/clone_svm1_lun2_vol_dest/svm1_lun2
 
- ## ESX DR
+## ESX DR
 esx_drhostname: 192.168.0.103
 esx_drusername: root
 esx_iscsi_hba: vmhba65
+
+## vCenter DR
+vcenter_drhostname: vc1.demo.netapp.com
+vcenter_drusername: administrator@vsphere.local
+vcenter_drpassword: Netapp1!
+inventory_drhostname:
+ - 192.168.0.103
+ - 192.168.0.104
+
