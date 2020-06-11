@@ -3,26 +3,14 @@
   gather_facts: false
 
   tasks:
-    - name: Set the state of a virtual machine to poweroff
-      vmware_guest_powerstate:
+    - name: Remove a virtual machine
+      vmware_guest:
         hostname: vc1.demo.netapp.com
         username: administrator@vsphere.local
         password: Netapp1!
         validate_certs: no
-       # folder: "/{{ datacenter_drname }}/vm"
         name: vm1
-        state: powered-off
-      delegate_to: localhost
-      register: deploy
-
-    - name: Delete an ESXi VM Guest
-      vsphere_guest:
-        vcenter_hostname: vc1.demo.netapp.com
-        validate_certs: no
-        username: administrator@vsphere.local
-        password: Netapp1!
-        guest: vm1
         state: absent
-        force: yes
+      delegate_to: localhost
 
 ...
