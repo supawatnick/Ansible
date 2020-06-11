@@ -12,8 +12,9 @@
         username: "{{ vcenter_drusername }}"
         password: "{{ vcenter_drpassword }}"
         validate_certs: no
-        name_match: "{{ vm_drname }}"
+        name: "{{ item }}"
         state: powered-off
+      with_items: "{{ vm_drname }}"
       delegate_to: localhost
       register: deploy
 
