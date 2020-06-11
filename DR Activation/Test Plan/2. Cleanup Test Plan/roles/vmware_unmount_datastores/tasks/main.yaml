@@ -11,3 +11,4 @@
     - "{{ inventory_drhostname }}"
     - "{{ clone_datastore }}"
   delegate_to: localhost
+  ignore_errors: true

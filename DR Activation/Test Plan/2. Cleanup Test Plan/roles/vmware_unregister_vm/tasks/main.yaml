@@ -8,3 +8,4 @@
     state: absent
   with_items: "{{ vm_drname }}"
   delegate_to: localhost
+  ignore_errors: true

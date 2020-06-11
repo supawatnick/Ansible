@@ -9,3 +9,4 @@
   with_items: "{{ vm_drname }}"
   delegate_to: localhost
   register: deploy
+  ignore_errors: true
