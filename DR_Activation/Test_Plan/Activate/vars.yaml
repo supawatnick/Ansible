@@ -26,7 +26,7 @@ ontap_initiators: vmwaredr
 ontap_lunid: 10
 
 ###Clone
-#ontap_cloneprefix: clone_
+ontap_cloneprefix: clone_
 ontap_cloneluns:
  - /vol/clone_svm1_lun1_vol_dest/svm1_lun1
  - /vol/clone_svm1_lun2_vol_dest/svm1_lun2
