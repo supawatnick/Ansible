@@ -54,9 +54,9 @@
 ### Unmount Datastores
     - name: Remove/Umount Datastores from a ESXi
       vmware_host_datastore:
-          hostname: "{{ inventory_drhostname }}"
-          username: "{{ esx_drusername }}"
-          password: "{{ esx_drpassword }}"
+          hostname: "{{ vcenter_drhostname }}"
+          username: "{{ vcenter_drusername }}"
+          password: "{{ vcenter_drpassword }}"
           datastore_name: "{{ item }}"
           state: absent
       with_items: "{{ clone_datastore }}"
