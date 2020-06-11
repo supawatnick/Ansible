@@ -1,3 +1,6 @@
+- name: Set fact
+  set_fact: ontap_cloneprefix={{ ontap_cloneprefix }}
+
 - name: Set ClonePrefix Clone
   na_ontap_volume_clone:
     hostname: "{{ ontap_drhostname }}"
@@ -8,7 +11,7 @@
     state: present
     vserver: "{{ ontap_drvserver }}"
     parent_volume: "{{ item }}"
-    name: "clone_{{ item }}"
+    name: "{{ ontap_cloneprefix + item }}"
     space_reserve: none
     parent_snapshot: "{{ ontap_dcsnapshot }}"
   async: 300
