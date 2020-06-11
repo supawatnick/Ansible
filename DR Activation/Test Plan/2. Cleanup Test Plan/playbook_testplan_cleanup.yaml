@@ -22,17 +22,6 @@
       validate_certs: false
 
   tasks:
-    - name: Set the state of a virtual machine to poweroff
-      vmware_guest_powerstate:
-        hostname: "{{ vcenter_drhostname }}"
-        username: "{{ vcenter_drusername }}"
-        password: "{{ vcenter_drpassword }}"
-        validate_certs: false
-        folder: "/{{ datacenter_drname }}/vm/"
-        name: "{{ vm_drname }}"
-        state: powered-off
-      delegate_to: localhost
-      register: deploy
     #- name: Power off VMs
     #- include_tasks: vmware_poweroff_vm.yaml
 

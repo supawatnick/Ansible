@@ -10,4 +10,3 @@
     state: powered-off
   delegate_to: localhost
   register: deploy
-  validate_certs: no
