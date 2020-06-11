@@ -22,7 +22,7 @@
       validate_certs: false
 
   tasks:
-    - name: Delete Ansible Snapshot DC
+    - name: delete SnapShot
       tags:
         - delete
       na_ontap_snapshot:
@@ -30,10 +30,9 @@
         snapshot: "{{ ontap_dcsnapshot }}"
         volume: "{{ item }}"
         vserver: "{{ ontap_dcvserver }}"
-        hostname: "{{ ontap_dchostname }}"
         username: "{{ ontap_dcusername }}"
         password: "{{ ontap_dcpassword }}"
-      with_items: "{{ ontap_dcvolumes }}"
-
+        hostname: "{{ ontap_dchostname }}"
+      with_names: "{{ ontap_dcvolumes }}"
 
 ...
