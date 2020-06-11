@@ -3,19 +3,19 @@
 
 - name: Set ClonePrefix Clone
   na_ontap_volume_clone:
-    hostname: "{{ ontap_drhostname }}"
-    username: "{{ ontap_drusername}}"
-    password: "{{ ontap_drpassword }}"
+    hostname: 192.168.0.110
+    username: admin
+    password: Netapp1!
     https: true
     validate_certs: false
     state: present
-    vserver: "{{ ontap_drvserver }}"
+    vserver: svm2
     # parent_volume: "{{ item }}"
     # name: "{{ ontap_cloneprefix + item }}"
     parent_volume: svm1_lun1_vol_dest
     name: clone_svm1_lun1_vol_dest
     space_reserve: none
-    parent_snapshot: "{{ ontap_dcsnapshot }}"
+    parent_snapshot: ansible_snapshot
   # async: 300
   # poll: 0
 #   register: _create_instances
