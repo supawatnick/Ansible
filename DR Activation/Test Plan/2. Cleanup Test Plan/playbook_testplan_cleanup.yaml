@@ -11,6 +11,7 @@
 
   vars_files:
     - vars.yaml
+    - current_ds.yaml
 
   vars:
     login: &dclogin
@@ -52,12 +53,10 @@
 
 ### Unmount Datastores
     - name: Remove/Umount Datastores from a ESXi
-      include_vars:
-          file: current_ds.yaml  ## Create from vmware_get_clone_datastores.sh
       vmware_host_datastore:
           hostname: "{{ inventory_drhostname }}"
           username: "{{ esx_drusername }}"
-          password: "{{ esx_drlist }}"
+          password: "{{ esx_drpassword }}"
           datastore_name: "{{ item }}"
           state: absent
       with_items: "{{ clone_datastore }}"
