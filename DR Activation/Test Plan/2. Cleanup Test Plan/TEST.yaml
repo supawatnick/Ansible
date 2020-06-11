@@ -1,25 +1,27 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+### Install VMware Collection >> ansible-galaxy collection install community.vmware
+
 ---
 - hosts: localhost
   gather_facts: false
+  collections:
+    - netapp.ontap
 
   vars_files:
     - vars.yaml
     - current_ds.yaml
 
-  tasks:
-    - name: Remove/Umount Datastores from a ESXi
-      vmware_host_datastore:
-          hostname: "{{ vcenter_drhostname }}"
-          username: "{{ vcenter_drusername }}"
-          password: "{{ vcenter_drpassword }}"
-          validate_certs: no
-          datastore_name: "{{ item.1 }}"
-          esxi_hostname: "{{ item.0 }}"
-          state: absent
-      with_nested:
-        - "{{ inventory_drhostname }}"
-        - "{{ clone_datastore }}"
-      delegate_to: localhost
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_drhostname }}"
+      username: "{{ ontap_drusername }}"
+      password: "{{ ontap_drpassword }}"
+      https: true
+      validate_certs: false
+
+  roles:
+    - vmware_poweroff_vm
 
 ...
-

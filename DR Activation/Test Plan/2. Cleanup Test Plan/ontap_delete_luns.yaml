@@ -1,0 +1,14 @@
+---
+- name: Create LUN
+  na_ontap_lun:
+    state: present
+    name: ansibleLUN
+    flexvol_name: ansibleVolume
+    vserver: ansibleVServer
+    size: 5
+    size_unit: mb
+    ostype: linux
+    space_reserve: True
+    hostname: "{{ netapp_drhostname }}"
+    username: "{{ netapp_drusername }}"
+    password: "{{ netapp_drpassword }}"

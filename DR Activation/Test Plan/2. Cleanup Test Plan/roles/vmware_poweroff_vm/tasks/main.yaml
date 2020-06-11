@@ -1,0 +1,11 @@
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest_powerstate:
+    hostname: "{{ vcenter_drhostname }}"
+    username: "{{ vcenter_drusername }}"
+    password: "{{ vcenter_drpassword }}"
+    validate_certs: no
+    name: "{{ item }}"
+    state: powered-off
+  with_items: "{{ vm_drname }}"
+  delegate_to: localhost
+  register: deploy
