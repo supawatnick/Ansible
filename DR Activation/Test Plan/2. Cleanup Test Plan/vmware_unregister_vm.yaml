@@ -1,4 +1,3 @@
----
 - name: Remove a virtual machine
   vmware_guest:
     hostname: "{{ vcenter_drhostname }}"

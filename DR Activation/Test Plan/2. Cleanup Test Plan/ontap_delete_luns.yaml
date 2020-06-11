@@ -1,9 +1,8 @@
----
 - name: Create LUN
   na_ontap_lun:
     state: present
-    name: ansibleLUN
-    flexvol_name: ansibleVolume
+    name: svm1_lun1
+    flexvol_name: clone_svm1_lun1_vol_dest
     vserver: ansibleVServer
     size: 5
     size_unit: mb

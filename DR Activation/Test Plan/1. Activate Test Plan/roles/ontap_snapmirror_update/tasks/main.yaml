@@ -1,0 +1,6 @@
+- name: Perform snapmirror update
+  shell: ./ontap_snapmirror_update.sh
+  register: out
+- name: debug snapmirror
+  debug:
+    var: out.stdout_lines

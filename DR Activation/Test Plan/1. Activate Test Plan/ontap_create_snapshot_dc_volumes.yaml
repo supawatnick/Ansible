@@ -1,0 +1,12 @@
+- name: Create Snapshot at DC
+  na_ontap_cg_snapshot:
+    state: present
+    hostname: "{{ ontap_dchostname }}"
+    username: "{{ ontap_dcusername }}"
+    password: "{{ ontap_dcpassword }}"
+    https: true
+    validate_certs: false
+    vserver: "{{ ontap_dcvserver }}"
+    snapshot: "{{ ontap_dcsnapshot }}"
+    volumes: "{{ ontap_dcvolumes }}"
+    snapmirror_label: "{{ ontap_dcsnapshot }}"
