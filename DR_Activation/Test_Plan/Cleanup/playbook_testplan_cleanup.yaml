@@ -25,6 +25,10 @@
     - vmware_poweroff_vm
     - vmware_unregister_vm
     - vmware_unmount_datastores
+  
+  tasks:
+    - name: Offline Clone LUNs
+    
 
 ### Delete Clone LUNs on DR ONTAP, if using NAS volumes add comments on this part
     # - name: Delete Clone LUNs

@@ -1,13 +1,9 @@
-- name: Create LUN
+- name: Delete Clone LUNs
   na_ontap_lun:
-    state: present
-    name: svm1_lun1
-    flexvol_name: clone_svm1_lun1_vol_dest
-    vserver: ansibleVServer
-    size: 5
-    size_unit: mb
-    ostype: linux
-    space_reserve: True
+    state: absent
+    name: "{{ item }}"
+    vserver: "{{ ontap_drvserver }}"
     hostname: "{{ netapp_drhostname }}"
     username: "{{ netapp_drusername }}"
     password: "{{ netapp_drpassword }}"
+  with_items: "{{ ontap_cloneluns }}"
