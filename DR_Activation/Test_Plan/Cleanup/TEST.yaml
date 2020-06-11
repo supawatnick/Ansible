@@ -14,7 +14,7 @@
     - current_ds.yaml
 
   vars:
-    login: &dclogin
+    login: &drlogin
       hostname: "{{ ontap_drhostname }}"
       username: "{{ ontap_drusername }}"
       password: "{{ ontap_drpassword }}"
@@ -27,9 +27,9 @@
         state: absent
         name: "{{ item }}"
         vserver: "{{ ontap_drvserver }}"
-        hostname: "{{ netapp_drhostname }}"
-        username: "{{ netapp_drusername }}"
-        password: "{{ netapp_drpassword }}"
+        hostname: "{{ ontap_drhostname }}"
+        username: "{{ ontap_drusername }}"
+        password: "{{ ontap_drpassword }}"
       with_items: "{{ ontap_cloneluns }}"
 
 ...
