@@ -17,3 +17,5 @@
       delegate_to: localhost
       register: deploy
 
+...
+
