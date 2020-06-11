@@ -1,9 +1,9 @@
 ---
 - hosts: localhost
   gather_facts: false
+
   vars_files:
     - vars.yaml
-
 
   tasks:
     - name: Set the state of a virtual machine to poweroff
@@ -29,8 +29,8 @@
       delegate_to: localhost
 
 ### List clone Datastores
-    - name: List clone Datastores
-    - shell: ./vmware_get_clone_datatores.sh
+#    - name: List clone Datastores
+#    - shell: ./vmware_get_clone_datatores.sh
 
 ### Unmount Datastores
     - name: Remove/Umount Datastores from a ESXi
