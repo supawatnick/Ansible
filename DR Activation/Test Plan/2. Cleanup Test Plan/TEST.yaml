@@ -13,10 +13,12 @@
           username: "{{ vcenter_drusername }}"
           password: "{{ vcenter_drpassword }}"
           validate_certs: no
-          datastore_name: "{{ item }}"
-          esxi_hostname: '{{ inventory_drhostname }}'
+          datastore_name: "{{ item.1 }}"
+          esxi_hostname: "{{ item.0 }}"
           state: absent
-      with_items: "{{ clone_datastore }}"
+      with_nested:
+        - "{{ inventory_drhostname }}"
+        - "{{ clone_datastore }}"
       delegate_to: localhost
 
 ...
