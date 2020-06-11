@@ -37,7 +37,11 @@ ontap_cloneluns:
 ## ESX DR
 esx_drhostname: 192.168.0.103
 esx_drusername: root
+esx_drpassword: Netapp1!
 esx_iscsi_hba: vmhba65
+esx_drlist:
+ - 192.168.0.103
+ - 192.168.0.104
 
 ## vCenter DR
 vcenter_drhostname: vc1.demo.netapp.com
@@ -46,4 +50,12 @@ vcenter_drpassword: Netapp1!
 inventory_drhostname:
  - 192.168.0.103
  - 192.168.0.104
+datacenter_drname: NetApp-HCI-Datacenter
+vm_drname:
+ - vm1
+ - vm2
+ - vm3
+ - vm4
+ - vm5
+
 

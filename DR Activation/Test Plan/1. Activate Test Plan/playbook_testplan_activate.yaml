@@ -51,8 +51,15 @@
       shell: ./vmware_resignature_mount_vmfs.sh >> ./vmware_resignature_mount_vmfs.log
 
 ## Comment task "Rescan HBA all ESXi in DR Cluster" incase using NAS
-    - name: Rescan HBA all ESXi
-    - include_tasks: vmware_rescan_hba.yaml
+    - name: Rescan HBA all ESXi in DR Cluster
+      vmware_host_scanhba:
+          hostname: "{{ vcenter_drhostname }}"
+          username: "{{ vcenter_drusername }}"
+          password: "{{ vcenter_drpassword }}"
+          esxi_hostname: "{{ inventory_drhostname }}"
+          refresh_storage: true
+          validate_certs: no
+      delegate_to: localhost
 
 ## Comment task "Mount NFS datastores" incase using SAN
 #    - name: Mount NFS datastores
