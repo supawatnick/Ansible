@@ -13,9 +13,9 @@
 
   vars:
     login: &dclogin
-      hostname: "{{ ontap_dchostname }}"
-      username: "{{ ontap_dcusername}}"
-      password: "{{ ontap_dcpassword }}"
+      hostname: "{{ ontap_drhostname }}"
+      username: "{{ ontap_drusername}}"
+      password: "{{ ontap_drpassword }}"
       https: true
       validate_certs: false
 
@@ -28,9 +28,14 @@
     - name: Unregister VMs
     - include_tasks: vmware_unregister_vm.yaml
 
+### List clone Datastores
+    - name: List clone Datastores
+    - shell: ./vmware_get_clone_datatores.sh
+
 ### Unmount Datastores
     - name: Unmount Datastores
     - include_tasks: vmware_unmount_datastores.yaml
+
 
 
 
