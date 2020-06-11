@@ -8,7 +8,6 @@
   gather_facts: false
   collections:
     - netapp.ontap
-    - community.vmware
 
   vars_files:
     - vars.yaml
