@@ -16,7 +16,7 @@
   vars:
     login: &dclogin
       hostname: "{{ ontap_drhostname }}"
-      username: "{{ ontap_drusername}}"
+      username: "{{ ontap_drusername }}"
       password: "{{ ontap_drpassword }}"
       https: true
       validate_certs: false
@@ -47,10 +47,6 @@
       with_items: "{{ vm_drname }}"
       delegate_to: localhost
 
-### List clone Datastores
-#    - name: List clone Datastores
-#    - shell: ./vmware_get_clone_datatores.sh
-
 ### Unmount Datastores
     - name: Remove/Umount Datastores from a ESXi
       vmware_host_datastore:
@@ -62,4 +58,18 @@
       with_items: "{{ clone_datastore }}"
       delegate_to: localhost
 
+### Delete Clone LUNs on DR ONTAP, if using NAS volumes add comments on this part
+    - name: Delete Clone LUNs
+      na_ontap_lun:
+        state: absent
+        name: ansibleLUN
+        flexvol_name: ansibleVolume
+        vserver: ansibleVServer
+        size: 5
+        size_unit: mb
+        ostype: linux
+        space_reserve: True
+        hostname: "{{ netapp_hostname }}"
+        username: "{{ netapp_username }}"
+        password: "{{ netapp_password }}"
 ...
