@@ -19,12 +19,58 @@
       https: true
       validate_certs: false
 
-  roles:
-    - ontap_create_snapshot_dc_volumes
-    - ontap_snapmirror_update
-    - ontap_create_flexclone
-#    - ontap_lun_map
-#    - vmware_resignature_mount_vmfs
+  tasks:
+    - name: Create Snapshot at DC
+      na_ontap_cg_snapshot:
+        state: present
+        vserver: "{{ ontap_dcvserver }}"
+        snapshot: "{{ ontap_dcsnapshot }}"
+        volumes: "{{ ontap_dcvolumes }}"
+        snapmirror_label: "{{ ontap_dcsnapshot }}"
+        <<: *dclogin
 
+## Perform SnapMirror Update at DR
+    - name: Perform snapmirror update
+      shell: ./ontap_snapmirror_update.sh
+      register: out
+    - debug: var=out.stdout_lines      
+
+## Perform FlexClone at DR
+    - name: Set ClonePrefix Clone
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix }}
+    - include_tasks: ontap_create_flexclone.yaml
+
+## Comment task "Map Clone LUNs to IGROUP" incase using NAS
+    - name: Map Clone LUNs to IGROUP
+      set_fact: ontap_initiators={{ ontap_initiators }}
+    - include_tasks: ontap_lun_map.yaml
+      with_items: "{{ ontap_cloneluns }}"
+
+## Comment task "Resignature and mount VMFS" incase using NAS
+    - name: Resignature and mount VMFS
+      shell: ./vmware_resignature_mount_vmfs.sh >> ./vmware_resignature_mount_vmfs.log
+
+## Comment task "Rescan HBA all ESXi in DR Cluster" incase using NAS
+    - name: Rescan HBA all ESXi in DR Cluster
+      vmware_host_scanhba:
+          hostname: "{{ vcenter_drhostname }}"
+          username: "{{ vcenter_drusername }}"
+          password: "{{ vcenter_drpassword }}"
+          esxi_hostname: "{{ item }}"
+          refresh_storage: true
+          validate_certs: no
+      with_items: "{{ esx_drlist }}"
+      delegate_to: localhost
+
+## Comment task "Mount NFS datastores" incase using SAN
+#    - name: Mount NFS datastores
+#      include_tasks: vmware_mount_nfs.yaml
+
+## Register VMs
+    - name: Register VMs
+      shell: ./vmware_register_vm.sh >> ./vmware_register_vm.sh.log
+
+## Poweron VMs
+    - name: Poweron VMs
+      shell: ./vmware_poweron_vm.sh >> ./vmware_poweron_vm.log
 ...
-  

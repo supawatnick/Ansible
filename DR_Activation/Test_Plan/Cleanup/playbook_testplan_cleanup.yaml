@@ -27,17 +27,17 @@
     - vmware_unmount_datastores
 
 ### Delete Clone LUNs on DR ONTAP, if using NAS volumes add comments on this part
-    - name: Delete Clone LUNs
-      na_ontap_lun:
-        state: absent
-        name: ansibleLUN
-        flexvol_name: ansibleVolume
-        vserver: ansibleVServer
-        size: 5
-        size_unit: mb
-        ostype: linux
-        space_reserve: True
-        hostname: "{{ netapp_hostname }}"
-        username: "{{ netapp_username }}"
-        password: "{{ netapp_password }}"
+    # - name: Delete Clone LUNs
+    #   na_ontap_lun:
+    #     state: absent
+    #     name: ansibleLUN
+    #     flexvol_name: ansibleVolume
+    #     vserver: ansibleVServer
+    #     size: 5
+    #     size_unit: mb
+    #     ostype: linux
+    #     space_reserve: True
+    #     hostname: "{{ netapp_hostname }}"
+    #     username: "{{ netapp_username }}"
+    #     password: "{{ netapp_password }}"
 ...
