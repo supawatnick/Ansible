@@ -7,11 +7,11 @@
 
   tasks:
     - name: Power off VMs
-    - include_tasks: vmware_poweroff_vm.yaml
+      include_tasks: vmware_poweroff_vm.yaml
 
 ### Un-register VM
     - name: Un-register VMs
-    - include_tasks: vmware_unregister_vm.yaml
+      include_tasks: vmware_unregister_vm.yaml
 
 ### List clone Datastores
     - name: List clone Datastores
@@ -19,6 +19,6 @@
 
 ### Unmount Datastores
     - name: Unmount Datastores
-    - include_tasks: vmware_unmount_datastores.yaml
+      include_tasks: vmware_unmount_datastores.yaml
 
 ...
