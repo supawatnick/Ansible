@@ -28,7 +28,6 @@
         hostname: "{{ vcenter_drhostname }}"
         username: "{{ vcenter_drusername }}"
         password: "{{ vcenter_drpassword }}"
-        validate_certs: no
         folder: "/{{ datacenter_drname }}/vm"
         name: "{{ vm_drname }}"
         state: powered-off
