@@ -51,6 +51,7 @@
       shell: ./vmware_resignature_mount_vmfs.sh >> ./vmware_resignature_mount_vmfs.log
 
 ## Comment task "Rescan HBA all ESXi in DR Cluster" incase using NAS
+    - name: Rescan HBA all ESXi
     - include_tasks: vmware_rescan_hba.yaml
 
 ## Comment task "Mount NFS datastores" incase using SAN

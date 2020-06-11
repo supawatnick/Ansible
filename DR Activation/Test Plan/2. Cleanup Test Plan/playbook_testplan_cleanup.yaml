@@ -21,11 +21,11 @@
 
   tasks:
 ### Power off VMs 
-    - name: Set the state of a virtual machine to poweroff
+    - name: Power off VMs
     - include_tasks: vmware_poweroff_vm.yaml
 
 ### Un-register VM
-    - name: Unregister VMs
+    - name: Un-register VMs
     - include_tasks: vmware_unregister_vm.yaml
 
 ### List clone Datastores
