@@ -1,10 +1,10 @@
 ---
-- name: Delete an ESXi VM Guest
-  vsphere_guest:
-    vcenter_hostname: "{{ vcenter_drhostname }}"
-    validate_certs: no
+- name: Remove a virtual machine
+  vmware_guest:
+    hostname: "{{ vcenter_drhostname }}"
     username: "{{ vcenter_drusername }}"
     password: "{{ vcenter_drpassword }}"
-    guest: "{{ vm_drname }}"
+    validate_certs: no
+    name: "{{ vm_drname }}"
     state: absent
-    force: yes
+  delegate_to: localhost
