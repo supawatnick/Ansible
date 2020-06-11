@@ -19,6 +19,7 @@
       https: true
       validate_certs: false
 
+  set_fact: ontap_cloneprefix={{ ontap_cloneprefix }}
   roles:
     - ontap_create_snapshot_dc_volumes
     - ontap_snapmirror_update
