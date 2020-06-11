@@ -20,4 +20,13 @@ sleep 3
 (( COUNT++ ))
 done
 
+## LOOP TO DELETE CLONE LUNS ###
+while [ $COUNT -le $LOOPS ]
+do
+LUN_DEST=`head -$COUNT $FILEIN |tail -1|awk '{print $1}'`  ## Put Cline LUNs dest to LUN_DEST
+echo y | ssh $ontap_drusername@$ontap_drhostname "lun delete -vserver $ontap_drvserver -path $LUN_DEST"
+sleep 3
+(( COUNT++ ))
+done
+
 rm lun_dest.list
