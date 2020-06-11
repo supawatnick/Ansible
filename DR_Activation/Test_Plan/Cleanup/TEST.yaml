@@ -1,3 +1,8 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+### Install VMware Collection >> ansible-galaxy collection install community.vmware
+
 ---
 - hosts: localhost
   gather_facts: false
@@ -6,16 +11,25 @@
 
   vars_files:
     - vars.yaml
+    - current_ds.yaml
 
-- tasks:
-  - name: Delete Clone LUNs
-    na_ontap_lun:
-      state: absent
-      name: "{{ item }}"
-      vserver: "{{ ontap_drvserver }}"
-      hostname: "{{ netapp_drhostname }}"
-      username: "{{ netapp_drusername }}"
-      password: "{{ netapp_drpassword }}"
-    with_items: "{{ ontap_cloneluns }}"
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_drhostname }}"
+      username: "{{ ontap_drusername }}"
+      password: "{{ ontap_drpassword }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: Delete Clone LUNs
+      na_ontap_lun:
+        state: absent
+        name: "{{ item }}"
+        vserver: "{{ ontap_drvserver }}"
+        hostname: "{{ netapp_drhostname }}"
+        username: "{{ netapp_drusername }}"
+        password: "{{ netapp_drpassword }}"
+      with_items: "{{ ontap_cloneluns }}"
 
 ...
