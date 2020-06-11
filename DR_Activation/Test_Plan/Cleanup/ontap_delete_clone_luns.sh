@@ -19,7 +19,7 @@ COUNT=1
 while [ $COUNT -le $LOOPS ]
 do
 LUN_DEST=`head -$COUNT $FILEIN |tail -1|awk '{print $1}'`  ## Put Cline LUNs dest to LUN_DEST
-VOL_DEST=`head -$COUNT $VOLDEST |tail -1|awk '{print $1}'`
+VOL_DEST=`head -$COUNT vol_dest.list |tail -1|awk '{print $1}'`
 echo y | ssh $ontap_drusername@$ontap_drhostname "lun offline -vserver $ontap_drvserver -path $LUN_DEST"
 sleep 3
 echo y | ssh $ontap_drusername@$ontap_drhostname "lun delete -vserver $ontap_drvserver -path $LUN_DEST"
