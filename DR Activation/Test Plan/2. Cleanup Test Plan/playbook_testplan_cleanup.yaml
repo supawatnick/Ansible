@@ -28,12 +28,12 @@
         hostname: "{{ vcenter_drhostname }}"
         username: "{{ vcenter_drusername }}"
         password: "{{ vcenter_drpassword }}"
-        folder: "/{{ datacenter_drname }}/vm"
+        folder: "/{{ datacenter_drname }}/vm/"
         name: "{{ vm_drname }}"
         state: powered-off
       delegate_to: localhost
       register: deploy
-      validate_certs: no
+      validate_certs: false
     #- name: Power off VMs
     #- include_tasks: vmware_poweroff_vm.yaml
 
