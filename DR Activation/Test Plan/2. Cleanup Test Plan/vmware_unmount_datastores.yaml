@@ -9,4 +9,4 @@
       datastore_name: "{{ item }}"
       state: absent
   with_items: "{{ clone_datastore }}"
-#  delegate_to: localhost
+  delegate_to: localhost

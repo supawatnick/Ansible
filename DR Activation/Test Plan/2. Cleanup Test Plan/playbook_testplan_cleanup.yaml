@@ -22,23 +22,45 @@
 
   tasks:
 ### PowerOff VM
-    - name: Power off VMs
-    - include_tasks: vmware_poweroff_vm.yaml
+    - name: Set the state of a virtual machine to poweroff
+      vmware_guest_powerstate:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        name: "{{ item }}"
+        state: powered-off
+      with_items: "{{ vm_drname }}"
+      delegate_to: localhost
+      register: deploy
 
 ### Un-register VM
-    - name: Un-register VMs
-    - include_tasks: vmware_unregister_vm.yaml
+    - name: Remove a virtual machine
+      vmware_guest:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ vm_drname }}"
+      delegate_to: localhost
 
 ### List clone Datastores
 #    - name: List clone Datastores
 #    - shell: ./vmware_get_clone_datatores.sh
 
 ### Unmount Datastores
-    - name: Unmount Datastores
-    - include_tasks: vmware_unmount_datastores.yaml
-
-
-
-
+    - name: Remove/Umount Datastores from a ESXi
+      include_vars:
+          file: current_ds.yaml  ## Create from vmware_get_clone_datastores.sh
+      vmware_host_datastore:
+          hostname: "{{ inventory_drhostname }}"
+          username: "{{ esx_drusername }}"
+          password: "{{ esx_drlist }}"
+          datastore_name: "{{ item }}"
+          state: absent
+      with_items: "{{ clone_datastore }}"
+      delegate_to: localhost
 
 ...
