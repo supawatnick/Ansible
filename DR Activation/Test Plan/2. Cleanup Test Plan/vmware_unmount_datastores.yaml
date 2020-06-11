@@ -6,6 +6,7 @@
       hostname: "{{ inventory_drhostname }}"
       username: "{{ esx_drusername }}"
       password: "{{ esx_drlist }}"
-      datastore_name: "{{ clone_datastore }}"
+      datastore_name: "{{ item }}"
       state: absent
+  with_items: "{{ clone_datastore }}"
   delegate_to: localhost
