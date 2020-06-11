@@ -1,16 +1,24 @@
 ---
 - hosts: localhost
   gather_facts: false
+  vars_files:
+    - vars.yaml
+
 
   tasks:
-    - name: Remove a virtual machine
-      vmware_guest:
-        hostname: vc1.demo.netapp.com
-        username: administrator@vsphere.local
-        password: Netapp1!
-        validate_certs: no
-        name: vm1
-        state: absent
-      delegate_to: localhost
+    - name: Power off VMs
+    - include_tasks: vmware_poweroff_vm.yaml
+
+### Un-register VM
+    - name: Un-register VMs
+    - include_tasks: vmware_unregister_vm.yaml
+
+### List clone Datastores
+    - name: List clone Datastores
+    - shell: ./vmware_get_clone_datatores.sh
+
+### Unmount Datastores
+    - name: Unmount Datastores
+    - include_tasks: vmware_unmount_datastores.yaml
 
 ...
