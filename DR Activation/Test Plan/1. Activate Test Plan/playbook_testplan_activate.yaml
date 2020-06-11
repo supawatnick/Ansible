@@ -50,7 +50,6 @@
 
 ## Comment task "Rescan HBA all ESXi in DR Cluster" incase using NAS
     - include_tasks: vmware_rescan_hba.yaml
-      delegate_to: localhost
 
 ## Comment task "Mount NFS datastores" incase using SAN
     - name: Mount NFS datastores
