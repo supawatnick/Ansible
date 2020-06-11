@@ -24,9 +24,9 @@ VOL_DEST=`head -$COUNT $VOLFILE |tail -1|awk '{print $1}'`
 #sleep 3
 #echo y | ssh $ontap_drusername@$ontap_drhostname "lun delete -vserver $ontap_drvserver -path $LUN_DEST"
 #sleep 3
-echo y | ssh $ontap_drusername@$ontap_drhostname "vol offline -vserver $ontap_drvserver -volume $ontap_cloneprefix$VOL_DEST"
+echo ssh $ontap_drusername@$ontap_drhostname "vol offline -vserver $ontap_drvserver -volume $ontap_cloneprefix$VOL_DEST"
 sleep 3
-echo y | ssh $ontap_drusername@$ontap_drhostname "vol delete -vserver $ontap_drvserver -volume $ontap_cloneprefix$VOL_DEST"
+echo ssh $ontap_drusername@$ontap_drhostname "vol delete -vserver $ontap_drvserver -volume $ontap_cloneprefix$VOL_DEST"
 sleep 3
 (( COUNT++ ))
 done

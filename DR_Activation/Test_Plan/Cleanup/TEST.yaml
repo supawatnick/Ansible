@@ -23,13 +23,6 @@
 
   tasks:
     - name: Delete Clone LUNs
-      na_ontap_lun:
-        state: absent
-        name: "{{ item }}"
-        vserver: "{{ ontap_drvserver }}"
-        hostname: "{{ ontap_drhostname }}"
-        username: "{{ ontap_drusername }}"
-        password: "{{ ontap_drpassword }}"
-      with_items: "{{ ontap_cloneluns }}"
+
 
 ...
