@@ -3,13 +3,15 @@
   gather_facts: false
 
   tasks:
-    - name: Gather info from standalone ESXi server having datacenter as 'ha-datacenter'
-      vmware_datastore_info:
+    - name: Set the state of a virtual machine to poweroff
+      vmware_guest_powerstate:
         hostname: vc1.demo.netapp.com
         username: administrator@vsphere.local
         password: Netapp1!
-        datacenter_name: NetApp-HCI-Datacenter
         validate_certs: no
+       # folder: "/{{ datacenter_drname }}/vm"
+        name: vm1
+        state: powered-off
       delegate_to: localhost
-      register: info
+      register: deploy
 ...
