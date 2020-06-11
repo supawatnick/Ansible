@@ -12,6 +12,7 @@
           hostname: "{{ vcenter_drhostname }}"
           username: "{{ vcenter_drusername }}"
           password: "{{ vcenter_drpassword }}"
+          validate_certs: no
           datastore_name: "{{ item }}"
           state: absent
       with_items: "{{ clone_datastore }}"

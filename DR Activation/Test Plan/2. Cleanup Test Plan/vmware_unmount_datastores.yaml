@@ -3,9 +3,10 @@
   include_vars:
       file: current_ds.yaml  ## Create from vmware_get_clone_datastores.sh
   vmware_host_datastore:
-      hostname: "{{ inventory_drhostname }}"
-      username: "{{ esx_drusername }}"
-      password: "{{ esx_drlist }}"
+      hostname: "{{ vcenter_drhostname }}"
+      username: "{{ vcenter_drusername }}"
+      password: "{{ vcenter_drpassword }}"
+      validate_certs: no
       datastore_name: "{{ item }}"
       state: absent
   with_items: "{{ clone_datastore }}"
