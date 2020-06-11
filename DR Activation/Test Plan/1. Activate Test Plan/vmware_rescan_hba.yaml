@@ -6,4 +6,5 @@
       password: '{{ vcenter_drpassword }}'
       esxi_hostname: '{{ inventory_drhostname }}'
       refresh_storage: true
+      validate_certs: false
   #delegate_to: localhost
