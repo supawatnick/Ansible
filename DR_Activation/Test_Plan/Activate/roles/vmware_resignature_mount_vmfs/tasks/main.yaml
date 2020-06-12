@@ -1,2 +1,0 @@
-- name: Resignature and mount VMFS
-  shell: ./vmware_resignature_mount_vmfs.sh >> ./vmware_resignature_mount_vmfs.log
