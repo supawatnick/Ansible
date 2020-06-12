@@ -1,0 +1,69 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - vars.yaml
+
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername }}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
+
+  tasks:
+    # Test Debug
+    # - name: debug
+    #   debug:
+    #     msg: "{{ item.sfvol}}"
+    #   loop: "{{ sf_volumes }}"
+
+    - name: Update Destination Volumes on Element
+      uri: 
+        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        method: POST
+        return_content: yes
+        body: >
+          {
+            "method": "UpdateSnapMirrorRelationship",
+            "params": {
+            "snapMirrorEndpointID": 1,
+            "destinationVolume": {
+            "type": "solidfire",
+            "volumeID": {{ item }}
+              }
+            } 
+          }
+        body_format: json
+        validate_certs: no
+      with_items: "{{ sf_volumes }}"
+
+
+    - name: Update Destination Volumes on Element
+      uri: 
+        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        method: POST
+        return_content: yes
+        body: >
+          {
+            "method": "CloneVolume",
+            "params": {
+            "volumeID": 21,
+            "name": "test2",
+            "access": "readWrite",
+            "snapshotName": "snapmirror.d41506db-e6d2-e347-90e9-03000a2c0d33_0.2020-06-12_061732",
+            "enableSnapMirrorReplication": false
+          }
+        body_format: json
+        validate_certs: no
+
+...

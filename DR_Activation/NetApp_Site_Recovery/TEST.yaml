@@ -1,7 +1,3 @@
-### Install shyaml >> sudo pip install shyaml
-### Install VMware lib >> sudo pip install pyvmomi
-### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
-
 ---
 - hosts: localhost
   gather_facts: false
@@ -19,51 +15,27 @@
       https: true
       validate_certs: false
 
+- name: Get List Snapshot 
+  uri: 
+    url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    method: POST
+    return_content: yes
+    body: >
+      {
+      "method": "ListSnapshots",
+      "params": {
+      "volumeID": "{{ item }}"
+      },
+      "id" : 1
+      }
+    body_format: json
+    validate_certs: no
+  register: listsnapshot
 
-  tasks:
-    #Update Destination Volumes on Element
-    # - name: debug
-    #   debug:
-    #     msg: "{{ item.sfvol}}"
-    #   loop: "{{ sf_volumes }}"
-
-    # - name: Update Destination Volumes on Element
-    #   uri: 
-    #     url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
-    #     method: POST
-    #     return_content: yes
-    #     body: >
-    #       {
-    #         "method": "UpdateSnapMirrorRelationship",
-    #         "params": {
-    #         "snapMirrorEndpointID": 1,
-    #         "destinationVolume": {
-    #         "type": "solidfire",
-    #         "volumeID": {{ item }}
-    #           }
-    #         } 
-    #       }
-    #     body_format: json
-    #     validate_certs: no
-    #   with_items: "{{ sf_volumes }}"
-
-
-    - name: Update Destination Volumes on Element
-      uri: 
-        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
-        method: POST
-        return_content: yes
-        body: >
-          {
-            "method": "CloneVolume",
-            "params": {
-            "volumeID": 21,
-            "name": "test2",
-            "access": "readWrite",
-            "snapshotName": "snapmirror.d41506db-e6d2-e347-90e9-03000a2c0d33_0.2020-06-12_061732",
-            "enableSnapMirrorReplication": false
-          }
-        body_format: json
-        validate_certs: no
+- name: Get Newest Snapshot
+  debug:
+    msg: "{{ listsnapshot }}" 
 
 ...
+#- name: Create VOlume CLone
+#  uri

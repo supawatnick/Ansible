@@ -1,9 +1,0 @@
-- name: Delete Clone LUNs
-  na_ontap_lun:
-    state: absent
-    name: "{{ item }}"
-    vserver: "{{ ontap_drvserver }}"
-    hostname: "{{ netapp_drhostname }}"
-    username: "{{ netapp_drusername }}"
-    password: "{{ netapp_drpassword }}"
-  with_items: "{{ ontap_cloneluns }}"

@@ -20,6 +20,7 @@
       validate_certs: false
 
   tasks:
+## Perform SnapShot Update at DC and tagged label with "ansible_snapshot"
     - name: Create Snapshot at DC
       na_ontap_cg_snapshot:
         state: present
