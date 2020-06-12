@@ -3,7 +3,7 @@
   gather_facts: false
 
   vars:
-    hostList: "{{ lookup('file', 'customProperties.json') }}"
+    hostList: "{{ lookup('file', 'vars.json') }}"
 
   tasks:
     - name: "Output all hostList as-is"
@@ -12,7 +12,7 @@
 
     - name: "Print all hostnames"
       debug:
-        msg: "{{ item.hostname }}"
+        msg: "{{ item.sfvolume }}"
       loop: "{{ hostList }}"
 
 ...
