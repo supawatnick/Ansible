@@ -18,7 +18,6 @@
       password: "{{ ontap_dcpassword }}"
       https: true
       validate_certs: false
-    # sf_volumes: "{{ lookup('file', 'vars.json') }}"
 
 
   tasks:
@@ -28,24 +27,43 @@
     #     msg: "{{ item.sfvol}}"
     #   loop: "{{ sf_volumes }}"
 
+    # - name: Update Destination Volumes on Element
+    #   uri: 
+    #     url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    #     method: POST
+    #     return_content: yes
+    #     body: >
+    #       {
+    #         "method": "UpdateSnapMirrorRelationship",
+    #         "params": {
+    #         "snapMirrorEndpointID": 1,
+    #         "destinationVolume": {
+    #         "type": "solidfire",
+    #         "volumeID": {{ item }}
+    #           }
+    #         } 
+    #       }
+    #     body_format: json
+    #     validate_certs: no
+    #   with_items: "{{ sf_volumes }}"
+
+
     - name: Update Destination Volumes on Element
       uri: 
-        url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
         method: POST
         return_content: yes
         body: >
           {
-            "method": "UpdateSnapMirrorRelationship",
+            "method": "CloneVolume",
             "params": {
-            "snapMirrorEndpointID": 1,
-            "destinationVolume": {
-            "type": "solidfire",
-            "volumeID": {{ item }}
-              }
-            }
+            "volumeID": 21,
+            "name": "test2",
+            "access": "readWrite",
+            "snapshotName": "snapmirror.d41506db-e6d2-e347-90e9-03000a2c0d33_0.2020-06-12_061732",
+            "enableSnapMirrorReplication": false
           }
         body_format: json
         validate_certs: no
-      with_items: "{{ sf_volumes }}"
 
 ...

@@ -61,7 +61,7 @@ vm_drname:
  - vm5
 
 ##Element OS
-sfadmin: admin
+sfuser: admin
 sfpassword: Netapp1!
 sfhostname: 192.168.0.105
 sf_volumes:
