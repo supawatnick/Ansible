@@ -1,0 +1,55 @@
+---
+- name: Get List Snapshot
+  uri:
+    url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    method: POST
+    return_content: yes
+    body: >
+      {
+      "method": "ListSnapshots",
+      "params": {
+      "volumeID": "{{ item }}"
+      },
+      "id" : 1
+      }
+    body_format: json
+    validate_certs: no
+  register: listsnapshot
+
+- name: Get Newest Snapshot
+  debug:
+    msg: "{{ listsnapshot.json.result.snapshots }}"
+
+- name: TEST
+  set_fact:
+    listsnapshotid: "{{ listsnapshotid | default([]) + [ ntap.snapshotID ] }}"
+  with_items: "{{ listsnapshot.json.result.snapshots }}"
+  loop_control:
+    loop_var: ntap
+
+- name: Set Snapshot ID
+  set_fact:
+    snapshotid: "{{ listsnapshotid | max }}"
+
+- debug:
+    msg: "{{ snapshotid }}"
+
+- name: Create Clone
+  uri:
+    url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    method: POST
+    status_code: 200
+    return_content: yes
+    body: >
+      {
+        "method": "CloneVolume",
+        "params": {
+          "volumeID": {{ item }},
+          "name": "{{ 'clone-' + (item|string) }}",
+          "access": "readWrite",
+          "snapshotID": {{ snapshotid }},
+          "enableSnapMirrorReplication": false
+        }
+      }
+    body_format: json
+    validate_certs: no
