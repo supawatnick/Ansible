@@ -46,6 +46,6 @@
           }
         body_format: json
         validate_certs: no
-      with_items: {{ sf_volumes }}
+      with_items: "{{ sf_volumes }}"
 
 ...
