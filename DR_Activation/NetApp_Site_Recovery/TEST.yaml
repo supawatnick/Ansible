@@ -27,18 +27,18 @@
         url: https://admin:Netapp1!@192.168.0.105/json-rpc/11.0/
         method: POST
         return_content: yes
-        body: "{{ lookup('file','vars.json') }}"
-        # body: >
-        #   {
-        #     "method": "UpdateSnapMirrorRelationship",
-        #     "params": {
-        #     "snapMirrorEndpointID": 1,
-        #     "destinationVolume": {
-        #     "type": "solidfire",
-        #     "volumeID": "{{ item.sf_volumes }}"
-        #       }
-        #     }
-        #   }
+        # body: "{{ lookup('file','vars.json') }}"
+        body: >
+          {
+            "method": "UpdateSnapMirrorRelationship",
+            "params": {
+            "snapMirrorEndpointID": 1,
+            "destinationVolume": {
+            "type": "solidfire",
+            "volumeID": "[ 21, 22 ]"
+              }
+            }
+          }
         body_format: json
         validate_certs: no
 
