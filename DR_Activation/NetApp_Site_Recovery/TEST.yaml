@@ -41,6 +41,6 @@
           }
         body_format: json
         validate_certs: no
-        loop: "{{ sf_volumes }}"
+      loop: "{{ sf_volumes }}"
 
 ...
