@@ -1,12 +1,12 @@
 ---
-  hosts: local
+- hosts: localhost
+  gather_facts: false
 
   vars:
     hostList: "{{ lookup('file', 'customProperties.json') }}"
 
   tasks:
-
-  - name: "Output all hostList as-is"
-    debug:
-      msg: "{{ hostList }}"
+    - name: "Output all hostList as-is"
+      debug:
+        msg: "{{ hostList }}"
 ...
