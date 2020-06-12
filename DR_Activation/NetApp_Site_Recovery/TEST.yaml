@@ -21,11 +21,11 @@
     sf_volumes: "{{ lookup('file', 'vars.json') }}"
 
   tasks:
-    - name: Write vars
-      hosts: local
-      debug:
-        msg: "{{ sf_volumes }}"
-        
+  - name: Write vars
+    hosts: local
+    debug:
+      msg: "{{ sf_volumes }}"
+
     ##Update Destination Volumes on Element
     # - name: Update Destination Volumes on Element
     #   uri: 
