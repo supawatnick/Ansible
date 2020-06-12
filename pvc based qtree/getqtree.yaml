@@ -1,0 +1,26 @@
+---
+- name: Get Qtree
+  uri:
+    url: https://{{ ontap_hostname }}/api/storage/qtrees?svm.name={{ ontap_vserver }}&volume.name={{ item.value.volname }}&return_records=false
+    user: "{{ ontap_username }}"
+    password: "{{ ontap_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  register: numqtree
+
+- debug:
+    msg: "{{ numqtree.json.num_records }}"
+
+- set_fact:
+    qtreerecords: "{{ numqtree.json.num_records - 1 | int}}"
+
+- set_fact:
+    noqtrees: "{{ numqtree.json.num_records - 1 |int }}"
+    volumetobeused: "{{ item.value.volname }}"
+  when: noqtrees == "" or  noqtrees >= qtreerecords
+
+- debug:
+    msg: "{{ noqtrees }} and {{ volumetobeused }}"
+

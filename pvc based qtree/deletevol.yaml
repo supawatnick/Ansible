@@ -1,0 +1,33 @@
+---
+- name: Create Volume & Qtree
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - ontap_vars.yaml
+
+  vars:
+    listvol: [ "ocpvol01", "ocpvol02" ]
+    maxqtrees: 3
+    login: &login
+      hostname: "{{ ontap_hostname }}"
+      username: "{{ ontap_username}}"
+      password: "{{ ontap_password }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: Delete FlexVol
+      na_ontap_volume:
+        state: absent
+        name: "{{ item }}"
+        junction_path: ""
+        vserver: svmocp4
+        wait_for_completion: True
+        comment: ansible created volume
+        <<: *login
+      with_items: "{{ listvol }}"

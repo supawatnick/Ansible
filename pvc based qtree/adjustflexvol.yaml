@@ -1,0 +1,35 @@
+---
+- name: Get Volume Size
+  uri:
+    url: https://{{ ontap_hostname }}/api/storage/volumes?svm.name={{ ontap_vserver }}&name={{ volumetobeused }}&fields=space.size
+    user: "{{ ontap_username }}"
+    password: "{{ ontap_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  register: volinfo
+
+- name: Set Fact Quota + Buffer
+  set_fact:
+    qtreesizes: "{{ (((qtreesizes | float) + ( newqtreesize | float * 1024 )) / 0.9) | round }}"
+
+- name: Set Volume Size
+  set_fact:
+    newvolsize: "{{ qtreesizes }}"
+  when: ((volinfo.json.records[0].space.size / 1024 / 1024) | round) < ( qtreesizes | float )
+
+- name: Adjust FlexVol Size
+  na_ontap_volume:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    state: present
+    name: "{{ volumetobeused }}"
+    size: "{{ newvolsize | int}}"
+    size_unit: mb
+    vserver: "{{ ontap_vserver }}"
+    wait_for_completion: True
+  when: ( newvolsize | int) != 0

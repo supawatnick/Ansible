@@ -1,0 +1,59 @@
+---
+- name: Create Volume & Qtree
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - ontap_vars.yaml
+
+  vars:
+    login: &login
+      hostname: "{{ ontap_hostname }}"
+      username: "{{ ontap_username}}"
+      password: "{{ ontap_password }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: Create Volume if necessary
+      include_tasks: createvol.yaml
+      with_dict: "{{ listvol }}"
+      
+    - name: Verify Qtree Name
+      uri:
+        url: https://{{ ontap_hostname }}/api/storage/qtrees?svm.name={{ ontap_vserver }}&name={{ newqtreename }}&return_records=false
+        user: "{{ ontap_username }}"
+        password: "{{ ontap_password }}"
+        method: GET
+        force_basic_auth: yes
+        status_code: 200
+        validate_certs: no
+      register: verifyqtree
+
+    - name: Please Change Qtree Name
+      fail:
+        msg: "Please Change Qtree Name"
+      when: ( verifyqtree.json.num_records | int ) != 0   
+    
+    - name: Get Number of Qtree & Set Volume to be Used
+      include_tasks: getqtree.yaml
+      with_dict: "{{ listvol }}"
+      
+    - name: Maximum Qtree Reached
+      fail:
+        msg: "Maximum Qtree Reached "
+      when: (( noqtrees | int ) >= ( maxqtrees | int )) and ( noqtrees | int) != 0
+
+    - name: Get All Qtree Size
+      include_tasks: getqtreesize.yaml
+
+    - name: Adjust Volume Size
+      include_tasks: adjustflexvol.yaml
+
+    - name: Create Qtree
+      include_tasks: createqtree.yaml
+

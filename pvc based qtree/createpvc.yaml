@@ -1,0 +1,71 @@
+---
+- name: Set NFS Path
+  set_fact:
+     nfspath: "{{ '/' + volumetobeused + '/' + newqtreename }}"
+
+- name: Create PV
+  uri:
+    url: https://{{ ocpurl }}:{{ ocpport }}/api/v1/persistentvolumes
+    status_code: 201
+    validate_certs: no
+    headers:
+      Authorization: "{{ 'Bearer ' + ocptoken }}"
+    method: POST
+    body_format: json
+    body: |
+      {
+        "apiVersion": "v1",
+        "kind": "PersistentVolume",
+        "metadata": {
+          "name": "{{ pvname | string }}"
+        },
+        "spec": {
+          "capacity": {
+            "storage": "{{ pvcsize | string + 'Gi' }}"
+          },
+          "accessModes": [
+            "{{ pvaccessmode }}"
+          ],
+          "persistentVolumeReclaimPolicy": "Retain",
+          "mountOptions": [
+            "hard",
+            "vers=4.1",
+            "sec=sys"
+          ],
+          "nfs": {
+            "path": "{{ nfspath }}",
+            "server": "{{ ontap_dataip }}"
+          }
+        }
+      }
+  register: pvcreation
+
+- name: Create PVC
+  uri:
+    url: https://{{ ocpurl }}:{{ ocpport }}/api/v1/namespaces/{{ ocpnamespace }}/persistentvolumeclaims
+    status_code: 201
+    validate_certs: no
+    headers:
+      Authorization: "{{ 'Bearer ' + ocptoken }}"
+    method: POST
+    body_format: json
+    body: |
+      {
+        "apiVersion": "v1",
+        "kind": "PersistentVolumeClaim",
+        "metadata": {
+          "name": "{{ pvcname }}",
+          "namespace": "{{ ocpnamespace }}"
+        },
+        "spec": {
+          "accessModes": [
+            "{{ pvaccessmode }}"
+          ],
+          "resources": {
+            "requests": {
+              "storage": "{{ pvcsize | string + 'Gi' }}"
+            }
+          },
+        "volumeName": "{{ pvname }}"
+        }
+      }

@@ -1,0 +1,32 @@
+---
+- name: Verify Persistent Volume not the same name
+  uri:
+    url: https://{{ ocpurl }}:{{ ocpport }}/api/v1/persistentvolumes/{{ pvname }}
+    headers:
+      Authorization: "{{ 'Bearer ' + ocptoken }}"
+    method: GET
+    status_code: 200
+    validate_certs: no
+  ignore_errors: yes
+  register: getpv
+
+- name: PV same name exist
+  fail:
+    msg:  "PV same name exist"
+  when: ( getpv.status | int ) == 200
+
+- name: Verify Persistent Volume Claim not the same name
+  uri:
+    url: https://{{ ocpurl }}:{{ ocpport }}/api/v1/namespaces/{{ ocpnamespace }}/persistentvolumeclaims/{{ pvname }}
+    headers:
+      Authorization: "{{ 'Bearer ' + ocptoken }}"
+    method: GET
+    status_code: 200
+    validate_certs: no
+  ignore_errors: yes
+  register: getpvc
+
+- name: PVC same name exist
+  fail:
+    msg:  "PV same name exist"
+  when: ( getpvc.status | int ) == 200

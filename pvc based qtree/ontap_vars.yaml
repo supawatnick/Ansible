@@ -1,0 +1,36 @@
+## ansible 2.9
+## ansible-galaxy collection install netapp.ontap
+## https://galaxy.ansible.com/netapp/ontap
+ontap_hostname: 172.16.13.211
+ontap_username: admin
+ontap_password: Netapp1!
+ontap_vserver: svmocp4
+ontap_dataip: 172.16.13.217
+listvol:
+  bucket01:
+    volname: ocpvol01
+    aggr: aggrDR
+  bucket02:
+    volname: ocpvol02
+    aggr: aggrDR02
+    #  bucket03:
+    #volname: ocpvol03
+    #aggr: aggrDR
+initialvolsize: 1 #in GiB
+maxqtrees: 3
+volumetobeused: ""
+noqtrees: ""
+qtreesizes: 0
+newvolsize: 0
+#####
+newqtreename: ""
+newqtreesize: 0 #in GiB
+##OpenShift
+ocpurl: "api.ocp4cluster.sgntap.org"
+ocpport: "6443"
+ocptoken: "eyJhbGciOiJSUzI1NiIsImtpZCI6InY2c2taWHNxVW9SZFNUZERkcWpMeWt1RW1kSVphR3hHbmJ6a3h2R2VoUGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6Im50YXAtdG9rZW4tbWR2ZnQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoibnRhcCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjQwNmQxZGE2LWY2ODItNDU4ZC05ZDIzLWJmMGI1YzgxOGRmNiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0Om50YXAifQ.B-oaNt-lzMhcRnVUP_wYlrn_a63WzkBE-1ZJ2thOW4Grs4ZKFelQ59K-aBMVKFg8r1B_jwoxSxeh0vs5XhFx9DBpta5giswwjULb9gSUDjilEtuGLfCXEwoZdMEFDGjU0Uo_5REVyHo9nv09gJq8sSvsYeCgUSxq_ErjkIBuUgbMLZIKfX7XAE7bciALJWFGuQJAisjG6B35RvW-edWUM3XwFfnqdHgPuPL3EL3toJQeG0QnY4rQgGCURaYmBTW1TCotf7ILDtyXwi_NRim7eVV72pCyK4KvtbtmGiM_1WWfU-KY1CoDd_OUu1CoV_49_dIUqFTEwcx3imPoW2Et3w"
+ocpnamespace: "demo-project"
+pvcname: "testpvc123"
+pvcsize: 3 #in GiB
+pvname: ""
+pvaccessmode: "ReadWriteMany"

@@ -1,0 +1,29 @@
+---
+- name: Extract PV/Qtree and Volume Name
+  set_fact:
+    volumetobedeleted: "{{  item.split('/')[1] }}"
+    pvtobedeleted: "{{  item.split('/')[2] }}"
+    
+- debug:
+    msg: "{{ volumetobedeleted + ' ' + pvtobedeleted }}"
+    
+- name: Delete Released PV
+  uri:
+   url: https://{{ ocpurl }}:{{ ocpport }}/api/v1/persistentvolumes/{{ pvtobedeleted }}
+   headers:
+     Authorization: "{{ 'Bearer ' + ocptoken }}"
+   method: DELETE
+   status_code: 200
+   validate_certs: no
+  
+- name: Delete Qtree
+  na_ontap_qtree:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    vserver: "{{ ontap_vserver }}"
+    state: absent
+    name: "{{ pvtobedeleted }}"
+    flexvol_name: "{{ volumetobedeleted }}"

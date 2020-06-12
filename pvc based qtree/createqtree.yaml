@@ -1,0 +1,61 @@
+---
+- name: Create Qtree
+  na_ontap_qtree:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    vserver: "{{ ontap_vserver }}"
+    state: present
+    name: "{{ newqtreename }}"
+    flexvol_name: "{{ volumetobeused }}"
+    export_policy: nfstraffic
+    security_style: unix
+    unix_permissions: "777"
+  register: qtreestatus
+
+- name: Set quota target
+  set_fact:
+     quotatarget: "{{ '/vol/' + volumetobeused + '/' + newqtreename }}"
+  when: qtreestatus is changed
+
+- debug:
+    msg: "{{ quotatarget }}"
+  when: qtreestatus is changed
+
+- name: Set Quota
+  na_ontap_quotas:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    vserver: "{{ ontap_vserver }}"
+    state: present
+    volume: "{{ volumetobeused }}"
+    quota_target: "{{ quotatarget }}"
+    type: tree
+    disk_limit: "{{ newqtreesize | string + 'GB' }}"
+    set_quota_status: True
+  register: quotastatus
+  when: qtreestatus is changed
+
+- name: Deactivate Quota
+  na_ontap_command:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    command: ["volume quota off -vserver {{ ontap_vserver }} -volume {{ volumetobeused }} -foreground true"]
+
+- name: Activate Quota
+  na_ontap_command:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    command: ["volume quota on -vserver {{ ontap_vserver }} -volume {{ volumetobeused }} -foreground true"]
+  

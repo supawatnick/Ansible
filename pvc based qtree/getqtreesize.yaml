@@ -1,0 +1,19 @@
+---
+- name: Get Qtree Size
+  uri:
+    url: https://{{ ontap_hostname }}/api/storage/quota/rules?svm.name={{ ontap_vserver }}&volume.name={{ volumetobeused }}&fields=space.hard_limit
+    user: "{{ ontap_username }}"
+    password: "{{ ontap_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  register: qtrees
+
+- name: Total Qtree Size
+  set_fact:
+    qtreesizes: "{{ item.space.hard_limit / 1024 / 1024 + qtreesizes | float}}"
+  with_items: "{{ qtrees.json.records }}"
+
+- debug:
+    msg: "{{ qtreesizes }}"

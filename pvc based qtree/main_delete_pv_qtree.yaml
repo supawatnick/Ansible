@@ -1,0 +1,49 @@
+---
+- name: Create PV and PVC
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - ontap_vars.yaml
+
+  tasks:
+    - name: Set PV Name & Qtree Name
+      set_fact:
+        pvname: "{{ 'pv-' + ocpnamespace + '-' + pvcname }}"
+        newqtreename: "{{ 'pv-' + ocpnamespace + '-' + pvcname }}"
+
+    - name: Get All PV
+      uri:
+        url: https://{{ ocpurl }}:{{ ocpport }}/api/v1/persistentvolumes
+        headers:
+          Authorization: "{{ 'Bearer ' + ocptoken }}"
+        method: GET
+        status_code: 200
+        validate_certs: no
+      ignore_errors: yes
+      register: getreleasedpv
+      
+    - name: Check PV
+      fail:
+        msg: "No Persistent Volume"
+      when: getreleasedpv.json['items'] is not defined and (getreleasedpv.json['items']|length == 0)
+
+    - name: Get Released PV NFS Path
+      set_fact:
+        listpvs: "{{ (listpvs | default([])) + [ item ] }}"
+      with_items: "{{ getreleasedpv.json | json_query(releasedpv)}}"
+      vars:
+        releasedpv: "items[?status.phase == 'Released'].spec.nfs.path"
+        
+    - name: Check Released PV
+      fail:
+        msg: "No Released Persistent Volume"
+      when:  listpvs is not defined and (listpvs|length == 0)
+
+    - name: Delete PV
+      include_tasks: deletepv.yaml
+      with_items: "{{ listpvs }}"

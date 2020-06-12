@@ -1,0 +1,13 @@
+---
+- name: Write vars
+  hosts: local
+
+  vars:
+    hostList: "{{ lookup('file', 'customProperties.json') }}"
+
+  tasks:
+
+  - name: "Output all hostList as-is"
+    debug:
+      msg: "{{ hostList }}"
+...

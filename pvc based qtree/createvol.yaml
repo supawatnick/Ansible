@@ -1,0 +1,40 @@
+---
+- name: Get Volume
+  uri:
+    url: https://{{ ontap_hostname }}/api/storage/volumes/?svm.name={{ ontap_vserver }}&name={{ item.value.volname }}&return_records=false
+    user: "{{ ontap_username }}"
+    password: "{{ ontap_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  register: getvol
+  
+- debug:
+    msg: "{{ getvol.json.num_records }}"
+    
+- name: Create FlexVol
+  na_ontap_volume:
+    hostname: "{{ ontap_hostname }}"
+    username: "{{ ontap_username}}"
+    password: "{{ ontap_password }}"
+    https: true
+    validate_certs: false
+    state: present
+    name: "{{ item.value.volname }}"
+    junction_path: "{{ '/' + item.value.volname }}"
+    is_infinite: False
+    aggregate_name: "{{ item.value.aggr }}"
+    size: "{{ initialvolsize }}"
+    size_unit: gb
+    space_guarantee: none
+    volume_security_style: unix
+    unix_permissions: "777"
+    tiering_policy: auto
+    snapshot_policy: none
+    policy: default
+    percent_snapshot_space: 10
+    vserver: svmocp4
+    wait_for_completion: True
+    comment: ansible created volume
+  when: getvol.json.num_records == 0

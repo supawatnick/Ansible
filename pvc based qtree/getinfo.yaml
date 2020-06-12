@@ -1,0 +1,53 @@
+---
+- name: Get NetApp Info
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  collections:
+    - netapp.ontap
+  
+  vars_files:
+    - ontap_vars.yaml
+
+  vars:
+    svmname: svmocp4
+    login: &login
+      hostname: "{{ ontap_hostname }}"
+      username: "{{ ontap_username}}"
+      password: "{{ ontap_password }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: Get NetApp info (Password Authentication)
+      na_ontap_info:
+        state: info
+        gather_subset:
+           - volume_info
+        <<: *login
+      register: ontap_info
+
+      # - debug:
+            #msg: "{{ ontap_info.ontap_info }}"
+
+    - name: run ontap cli command
+      na_ontap_command:
+        command: ["volume show -vserver {{ svmname }} -volume testqtree -fields size"]
+        return_dict: true
+        <<: *login
+      register: vol_output
+
+    - debug:
+        msg: "{{ vol_output.msg }}"
+
+    - name: run ontap cli command
+      na_ontap_command:
+        command: ["vol qtree show -vserver svmocp4 -volume testqtree -fields qtree,qtree-path"]
+        return_dict: true
+        <<: *login
+      register: vol_output
+
+    - debug:
+        msg: "{{ vol_output.msg }}"
+
