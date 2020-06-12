@@ -26,10 +26,10 @@
         url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
         method: POST
         return_content: yes
-        body: {"method": "UpdateSnapMirrorRelationship","params": {"snapMirrorEndpointID": 1,"destinationVolume": {"type": "solidfire","volumeID": 21}}}
+        body: {"method": "UpdateSnapMirrorRelationship","params": {"snapMirrorEndpointID": 1,"destinationVolume": {"type": "solidfire","volumeID": {{ sf_volumes }}}}}
         body_format: json
         validate_certs: no
-
+      with_items: "{{ sf_volumes }}"
 
 
 # {"method": "UpdateSnapMirrorRelationship",
