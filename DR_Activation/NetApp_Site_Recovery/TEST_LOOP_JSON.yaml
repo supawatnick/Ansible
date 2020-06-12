@@ -1,5 +1,4 @@
 ---
-- name: Write vars
   hosts: local
 
   vars:
