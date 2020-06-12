@@ -78,6 +78,8 @@
         hostname: "{{ ontap_dchostname }}"
         username: "{{ ontap_dcusername }}"
         password: "{{ ontap_dcpassword }}"
+        https: true
+        validate_certs: false
       with_items: "{{ ontap_dcvolumes }}"
     
 ...
