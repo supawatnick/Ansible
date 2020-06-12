@@ -9,4 +9,10 @@
     - name: "Output all hostList as-is"
       debug:
         msg: "{{ hostList }}"
+
+    - name: "Print all hostnames"
+      debug:
+        msg: "{{ item.hostname }}"
+      loop: "{{ hostList }}"
+
 ...
