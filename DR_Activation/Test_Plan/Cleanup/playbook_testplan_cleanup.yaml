@@ -14,22 +14,59 @@
     - current_ds.yaml
 
   vars:
-    login: &dclogin
+    login: &drlogin
       hostname: "{{ ontap_drhostname }}"
       username: "{{ ontap_drusername }}"
       password: "{{ ontap_drpassword }}"
       https: true
       validate_certs: false
-
-  roles:
-    - vmware_poweroff_vm
-    - vmware_unregister_vm
-    - vmware_unmount_datastores
   
   tasks:
+    ##Power Off VMs
+    - name: Set the state of a virtual machine to poweroff
+      vmware_guest_powerstate:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        name: "{{ item }}"
+        state: powered-off
+      with_items: "{{ vm_drname }}"
+      delegate_to: localhost
+      register: deploy
+    
+    ##Unregister VMs
+    - name: Remove a virtual machine
+      vmware_guest:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ vm_drname }}"
+      delegate_to: localhost
+
+    ##Unmount and Remove Clone Datastores
+    - name: Unmount and Remove Clone Datastores from a ESXi
+      vmware_host_datastore:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        datastore_name: "{{ item.1 }}"
+        esxi_hostname: "{{ item.0 }}"
+        state: absent
+      with_nested:
+        - "{{ inventory_drhostname }}"
+        - "{{ clone_datastore }}"
+      delegate_to: localhost
+
+     ##Delete Clone LUNs/Volumes on DR-ONTAP 
     - name: Delete Clone LUNs
     - shell: ./ontap_delete_clone_luns.sh
 
+     ##Delete Snapshot on DC-ONTAP
     - name: Delete Ansible Snapshot DC
       tags:
         - delete
@@ -43,5 +80,4 @@
         password: "{{ ontap_dcpassword }}"
       with_items: "{{ ontap_dcvolumes }}"
     
-
 ...
