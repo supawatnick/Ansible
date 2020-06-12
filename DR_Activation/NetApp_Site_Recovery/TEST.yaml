@@ -18,16 +18,16 @@
       password: "{{ ontap_dcpassword }}"
       https: true
       validate_certs: false
+    sf_volumes: "{{ lookup('file', 'vars.json') }}"
 
 
   tasks:
     #Update Destination Volumes on Element
     - name: Update Destination Volumes on Element
       uri: 
-        url: https://admin:Netapp1!@192.168.0.105/json-rpc/11.0/
+        url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
         method: POST
         return_content: yes
-        # body: "{{ lookup('file','vars.json') }}"
         body: >
           {
             "method": "UpdateSnapMirrorRelationship",
@@ -35,11 +35,12 @@
             "snapMirrorEndpointID": 1,
             "destinationVolume": {
             "type": "solidfire",
-            "volumeID": "[ 21, 22 ]"
+            "volumeID": "[ item.volumeID ]"
               }
             }
           }
         body_format: json
         validate_certs: no
+        loop: "{{ sf_volumes }}"
 
 ...
