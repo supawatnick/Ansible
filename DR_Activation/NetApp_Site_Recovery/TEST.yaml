@@ -35,12 +35,12 @@
             "snapMirrorEndpointID": 1,
             "destinationVolume": {
             "type": "solidfire",
-            "volumeID": "{{ item.volumeid }}"
+            "volumeID": "[{{ item.volumeid }}]"
               }
             }
           }
         body_format: json
         validate_certs: no
-        loop: "{{ sf_volumes }}"
+      loop: "{{ sf_volumes }}"
 
 ...
