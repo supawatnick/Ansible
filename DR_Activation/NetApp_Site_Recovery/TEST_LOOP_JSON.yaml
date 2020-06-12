@@ -5,17 +5,18 @@
   vars_files:
     - vars.yaml
 
-- name: Create Volume
-  sf_volume_manager:
-    hostname: "{{ sfhostname }}"
-    username: "{{ sfadmin }}"
-    password: "{{ sfpassword }}"
-    state: present
-    name: AnsibleVol
-    qos: {minIOPS: 1000, maxIOPS: 20000, burstIOPS: 50000}
-    account_id: 2
-    enable512e: True
-    size: 1
-    size_unit: gb
+  tasks:
+    - name: Create Volume
+      sf_volume_manager:
+        hostname: "{{ sfhostname }}"
+        username: "{{ sfadmin }}"
+        password: "{{ sfpassword }}"
+        state: present
+        name: AnsibleVol
+        qos: {minIOPS: 1000, maxIOPS: 20000, burstIOPS: 50000}
+        account_id: 2
+        enable512e: True
+        size: 1
+        size_unit: gb
 
 ...
