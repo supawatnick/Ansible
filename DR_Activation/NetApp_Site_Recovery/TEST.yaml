@@ -18,15 +18,15 @@
       password: "{{ ontap_dcpassword }}"
       https: true
       validate_certs: false
-    sf_volumes: "{{ lookup('file', 'vars.json') }}"
+    # sf_volumes: "{{ lookup('file', 'vars.json') }}"
 
 
   tasks:
     #Update Destination Volumes on Element
-    - name: debug
-      debug:
-        msg: "{{ item.sfvol}}"
-      loop: "{{ sf_volumes }}"
+    # - name: debug
+    #   debug:
+    #     msg: "{{ item.sfvol}}"
+    #   loop: "{{ sf_volumes }}"
 
     - name: Update Destination Volumes on Element
       uri: 
@@ -40,12 +40,12 @@
             "snapMirrorEndpointID": 1,
             "destinationVolume": {
             "type": "solidfire",
-            "volumeID": "{{ item.sfvol }}"
+            "volumeID": "{{ item }}"
               }
             }
           }
         body_format: json
         validate_certs: no
-      loop: "{{ sf_volumes }}"
+      with_items: {{ sf_volumes }}
 
 ...
