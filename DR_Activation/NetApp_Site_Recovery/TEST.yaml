@@ -20,13 +20,36 @@
       validate_certs: false
 
   tasks:
-    - name: Create Snapshot at DC
-      na_ontap_cg_snapshot:
-        state: present
-        vserver: "{{ ontap_dcvserver }}"
-        snapshot: "{{ ontap_dcsnapshot }}"
-        volumes: "{{ ontap_dcvolumes }}"
-        snapmirror_label: "{{ ontap_dcsnapshot }}"
-        <<: *dclogin
+    ##Update Destination Volumes on Element
+    - name: Update Destination Volumes on Element
+      uri: 
+        url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        method: POST
+        return_content: yes
+        body: {"method": "UpdateSnapMirrorRelationship","params": {"snapMirrorEndpointID": 1,"destinationVolume": {"name": "vol1-sf","type": "solidfire","volumeID": 21}}}
+        body_format: json
+        validate_certs: no
+
+
+
+# {"method": "UpdateSnapMirrorRelationship",
+#   "params": {
+#     "snapMirrorEndpointID": 1,
+#     "destinationVolume": {
+#       "name": "vol1-sf",
+#       "type": "solidfire",
+#       "volumeID": 21
+#     }
+#   }
+# }
+
+# - name: Update Destination Volumes on Element
+#   uri: 
+#     url: https://admin:Netapp1!@192.168.0.105/json-rpc/8.0/
+#     method: POST
+#     return_content: yes
+#     body: {"method": "ListVolumes","params": {"volumeIDs": [1],"volumeStatus": "active","isPaired": "false"},"id": 1}
+#     body_format: json
+#     validate_certs: no
 
 ...
