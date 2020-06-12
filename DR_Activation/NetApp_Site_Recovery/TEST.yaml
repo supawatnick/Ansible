@@ -3,79 +3,43 @@
 ### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
 
 ---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
 
-- name: Write vars
-  hosts: local
+  vars_files:
+    - vars.yaml
 
   vars:
-    hostList: "{{ lookup('file', 'vars.json') }}"
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername }}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
 
   tasks:
-
-  - name: "Output all hostList as-is"
-    debug:
-      msg: "{{ hostList }}"
-# - hosts: localhost
-#   gather_facts: false
-#   collections:
-#     - netapp.ontap
-
-#   vars_files:
-#     - vars.yaml
-
-#   vars:
-#     login: &dclogin
-#       hostname: "{{ ontap_dchostname }}"
-#       username: "{{ ontap_dcusername }}"
-#       password: "{{ ontap_dcpassword }}"
-#       https: true
-#       validate_certs: false
-#     sf_volumes: "{{ lookup('file', 'vars.json') }}"
-
-#   tasks:
-#     #Update Destination Volumes on Element
-#     - name: Update Destination Volumes on Element
-#       uri: 
-#         url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
-#         method: POST
-#         return_content: yes
-#         body: >
-#           {
-#             "method": "UpdateSnapMirrorRelationship",
-#             "params": {
-#             "snapMirrorEndpointID": 1,
-#             "destinationVolume": {
-#             "type": "solidfire",
-#             "volumeID": "{{ item.sf_volumes }}"
-#               }
-#             }
-#           }
-#         body_format: json
-#         validate_certs: no
-#         loop: "{{ sf_volumes }}"
-
-    
-
-
-
-# {"method": "UpdateSnapMirrorRelationship",
-#   "params": {
-#     "snapMirrorEndpointID": 1,
-#     "destinationVolume": {
-#       "name": "vol1-sf",
-#       "type": "solidfire",
-#       "volumeID": 21
-#     }
-#   }
-# }
-
-# - name: Update Destination Volumes on Element
-#   uri: 
-#     url: https://admin:Netapp1!@192.168.0.105/json-rpc/8.0/
-#     method: POST
-#     return_content: yes
-#     body: {"method": "ListVolumes","params": {"volumeIDs": [1],"volumeStatus": "active","isPaired": "false"},"id": 1}
-#     body_format: json
-#     validate_certs: no
+    #Update Destination Volumes on Element
+    - name: Update Destination Volumes on Element
+      uri: 
+        url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        method: POST
+        return_content: yes
+        body: "{{ lookup('file','vars.json') }}"
+        # body: >
+        #   {
+        #     "method": "UpdateSnapMirrorRelationship",
+        #     "params": {
+        #     "snapMirrorEndpointID": 1,
+        #     "destinationVolume": {
+        #     "type": "solidfire",
+        #     "volumeID": "{{ item.sf_volumes }}"
+        #       }
+        #     }
+        #   }
+        body_format: json
+        validate_certs: no
 
 ...

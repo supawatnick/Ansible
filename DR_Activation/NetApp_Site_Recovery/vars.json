@@ -1,6 +1,10 @@
 {
-    "sf_volumes": [
-      20,
-      21
-    ]
+    "method": "UpdateSnapMirrorRelationship",
+    "params": {
+    "snapMirrorEndpointID": 1,
+    "destinationVolume": {
+    "type": "solidfire",
+    "volumeID": "21"
+      }
+    }
   }
