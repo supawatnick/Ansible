@@ -26,7 +26,7 @@
     - name: debug
       debug:
         msg: {{ item.sfvol}}
-      loop: {{ sf_volumes }}
+      loop: "{{ sf_volumes }}"
       
     - name: Update Destination Volumes on Element
       uri: 
