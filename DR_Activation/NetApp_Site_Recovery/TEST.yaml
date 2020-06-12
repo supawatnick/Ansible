@@ -23,6 +23,11 @@
 
   tasks:
     #Update Destination Volumes on Element
+    - name: debug
+      debug:
+        msg: {{ item.sfvol}}
+      loop: {{ sf_volumes }}
+      
     - name: Update Destination Volumes on Element
       uri: 
         url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
@@ -35,7 +40,7 @@
             "snapMirrorEndpointID": 1,
             "destinationVolume": {
             "type": "solidfire",
-            "volumeID": {{ item.sfvol }}
+            "volumeID": "{{ item.sfvol }}"
               }
             }
           }
