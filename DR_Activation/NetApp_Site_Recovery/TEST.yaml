@@ -24,7 +24,7 @@
     #Update Destination Volumes on Element
     - name: Update Destination Volumes on Element
       uri: 
-        url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        url: https://admin:Netapp1!@192.168.0.105/json-rpc/11.0/
         method: POST
         return_content: yes
         body: "{{ lookup('file','vars.json') }}"
