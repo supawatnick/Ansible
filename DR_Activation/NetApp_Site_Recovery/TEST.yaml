@@ -21,26 +21,33 @@
     sf_volumes: "{{ lookup('file', 'vars.json') }}"
 
   tasks:
+    - name: Write vars
+      hosts: local
+      debug:
+        msg: "{{ sf_volumes }}"
+        
     ##Update Destination Volumes on Element
-    - name: Update Destination Volumes on Element
-      uri: 
-        url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
-        method: POST
-        return_content: yes
-        body: >
-          {
-            "method": "UpdateSnapMirrorRelationship",
-            "params": {
-            "snapMirrorEndpointID": 1,
-            "destinationVolume": {
-            "type": "solidfire",
-            "volumeID": "{{ item.sf_volumes }}"
-              }
-            }
-          }
-        body_format: json
-        validate_certs: no
-        loop: "{{ sf_volumes }}"
+    # - name: Update Destination Volumes on Element
+    #   uri: 
+    #     url: "https://{{ sfadmin }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    #     method: POST
+    #     return_content: yes
+    #     body: >
+    #       {
+    #         "method": "UpdateSnapMirrorRelationship",
+    #         "params": {
+    #         "snapMirrorEndpointID": 1,
+    #         "destinationVolume": {
+    #         "type": "solidfire",
+    #         "volumeID": "{{ item.sf_volumes }}"
+    #           }
+    #         }
+    #       }
+    #     body_format: json
+    #     validate_certs: no
+    #     loop: "{{ sf_volumes }}"
+
+    
 
 
 
