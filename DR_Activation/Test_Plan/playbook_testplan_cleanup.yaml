@@ -64,7 +64,7 @@
 
      ##Delete Clone LUNs/Volumes on DR-ONTAP 
     - name: Delete Clone LUNs
-    - shell: ./ontap_delete_clone_luns.sh
+      shell: ./ontap_delete_clone_luns.sh
 
      ##Delete Snapshot on DC-ONTAP
     - name: Delete Ansible Snapshot DC
