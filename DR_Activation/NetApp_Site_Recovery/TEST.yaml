@@ -40,7 +40,7 @@
             "snapMirrorEndpointID": 1,
             "destinationVolume": {
             "type": "solidfire",
-            "volumeID": "{{ item }}"
+            "volumeID": {{ item }}
               }
             }
           }
