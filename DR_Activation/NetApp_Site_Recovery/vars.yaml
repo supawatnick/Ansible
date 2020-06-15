@@ -7,11 +7,13 @@ ontap_dcvserver: svm1
 ontap_dcvolumes:
    # - vol1_sf
    # - vol2_sf
- - svm1_lun1_vol
- - svm1_lun2_vol
- - svm1_lun3_vol
- - svm1_lun4_vol
- - svm1_lun5_vol
+#  - svm1_lun1_vol
+#  - svm1_lun2_vol
+#  - svm1_lun3_vol
+#  - svm1_lun4_vol
+#  - svm1_lun5_vol
+  - nfs_vol1
+  - nfs_vol2
 
 ##DR
 ontap_drhostname: 192.168.0.110
@@ -19,13 +21,16 @@ ontap_drusername: admin
 ontap_drpassword: Netapp1!
 ontap_drvserver: svm2
 ontap_drvolumes:
- - svm1_lun1_vol_dest
- - svm1_lun2_vol_dest
- - svm1_lun3_vol_dest
- - svm1_lun4_vol_dest
- - svm1_lun5_vol_dest
+#  - svm1_lun1_vol_dest
+#  - svm1_lun2_vol_dest
+#  - svm1_lun3_vol_dest
+#  - svm1_lun4_vol_dest
+#  - svm1_lun5_vol_dest
+  - nfs_vol1_dest
+  - nfs_vol2_dest
 ontap_initiators: vmwaredr
 ontap_lunid: 100
+ontap_drnfsserver: 192.168.0.222
 
 ###ONTAP Clone
 ontap_cloneprefix: ansible_
@@ -52,9 +57,9 @@ vm_drname:
 #  - sf2
  - vm1
  - vm2
- - vm3
- - vm4
- - vm5
+#  - vm3
+#  - vm4
+#  - vm5
 
 ##Element OS
 sfuser: admin
