@@ -42,7 +42,7 @@
     - name: "Display LUN path"
       debug:
         msg: "{{ item }}"
-      loop: "{{ luninfo.ontap_info | json_query('luninfo.ontap_info') }}"
+      with_items: "{{ luninfo.ontap_info | json_query('luninfo.ontap_info') }}"
 
 
 # ##Deubg2
