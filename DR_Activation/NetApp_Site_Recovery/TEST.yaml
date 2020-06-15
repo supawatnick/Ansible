@@ -63,8 +63,7 @@
           {
             "method": "DeleteVolumes",
             "params": {
-              "volumeIDs": {{ item }}
-              ]
+              "volumeIDs": [{{ item }}]
             }
           }
         body_format: json
