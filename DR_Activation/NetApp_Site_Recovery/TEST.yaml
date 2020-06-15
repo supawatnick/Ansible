@@ -43,7 +43,7 @@
       set_fact:
         listlunpath: "{{ listlunpath | default([]) + [ ntap.path ] }}"
       with_items: "{{ luninfo.ontap_info.lun_info }}"
-      when: sf.name is match("clone*")
+      when: ntap.path is match("/vol/clone*")
       loop_control:
         loop_var: ntap
 
