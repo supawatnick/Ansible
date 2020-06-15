@@ -29,14 +29,14 @@
         gather_subset:
           - "volume_info"
  #         - "lun_info"
-      register: volinfo
+      register: luninfo
 
 
 #Debug1
     - name: print volume and lun info
       debug:
-        msg: "{{ volinfo }}"
-      # with_items: "{{ luninfo.ontap_info.lun_info }}"
+        msg: "{{ (item.path|string) }}"
+      loop: "{{ luninfo.ontap_info.lun_info }}"
       # register: luninfo2"
 
 
