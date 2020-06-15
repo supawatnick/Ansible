@@ -35,7 +35,7 @@
 #Debug1
     - name: print volume and lun info
       debug:
-        msg: " {{ luninfo.ontap_info.lun_info.svm1:/vol/ONTAP_DP/ONTAP-DP }} "
+        msg: " {{ luninfo.ontap_info.lun_info }} "
 
 
 # ##Deubg2
