@@ -40,17 +40,17 @@
       debug:
         msg: "{{ listvolume }}"
 
-# ###Get all volumes ID after clone   
-#     - name: Get volume ID with clone
-#       set_fact:
-#         listvolumeid: "{{ listvolume | default([]) + [ sf.name ] }}"
-#       with_items: "{{ listvolume.json.result.volumes }}"
-#       loop_control:
-#         loop_var: sf
+###Get all volumes ID after clone   
+    - name: Get volume ID with clone
+      set_fact:
+        listvolumeid: "{{ listvolumeid | default([]) + [ sf.name ] }}"
+      with_items: "{{ listvolume.json.result.volumes }}"
+      loop_control:
+        loop_var: sf
 
-#     - name: print clone ID
-#       debug:
-#         msg: "{{ listvolumeid }}"
+    - name: print clone ID
+      debug:
+        msg: "{{ listvolumeid }}"
 
 ...
 # ###Get all volumes ID after clone
