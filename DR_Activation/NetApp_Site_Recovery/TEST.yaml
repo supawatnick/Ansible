@@ -41,7 +41,7 @@
 ##Deubg2
     - name: Set Fact
       set_fact:
-        listlunpath: "{{ listlunpath | default([]) + [ ntap.path ] }}"
+        listlunpath: "{{ listlunpath | default([]) + {{ ntap.path }} }}"
       with_items: "{{ luninfo.ontap_info.lun_info }}"
 #      when: ntap.path is match("/vol/clone*")
       loop_control:
