@@ -28,7 +28,7 @@ ontap_initiators: vmwaredr
 ontap_lunid: 10
 
 ###ONTAP Clone
-ontap_cloneprefix: clone_
+ontap_cloneprefix: ansible_
 
 ## ESX DR
 esx_drhostname: 192.168.0.103

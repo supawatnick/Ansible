@@ -6,7 +6,7 @@ ontap_drusername=`cat vars.yaml | shyaml get-value ontap_drusername`
 ontap_drvserver=`cat vars.yaml | shyaml get-value ontap_drvserver`
 
 cat vars.yaml | shyaml get-value ontap_cloneluns| awk '{print $2}' > lun_dest.list
-cat vars.yaml | shyaml get-value ontap_drvolumes| awk '{print "clone_"$2}' > vol_dest.list
+cat vars.yaml | shyaml get-value ontap_drvolumes| awk '{print "ansible_"$2}' > vol_dest.list
 
 # Create Loop following Clone LUNs and VOLUMEs
 FILEIN=lun_dest.list
