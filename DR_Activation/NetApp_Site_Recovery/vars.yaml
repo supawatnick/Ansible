@@ -54,13 +54,13 @@ inventory_drhostname:
  - 192.168.0.104
 datacenter_drname: NetApp-HCI-Datacenter
 vm_drname:
- - sf1
- - sf2
-#  - vm1
-#  - vm2
-#  - vm3
-#  - vm4
-#  - vm5
+#  - sf1
+#  - sf2
+ - vm1
+ - vm2
+ - vm3
+ - vm4
+ - vm5
 
 ##Element OS
 sfuser: admin
