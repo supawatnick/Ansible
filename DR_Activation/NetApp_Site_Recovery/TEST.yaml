@@ -43,8 +43,9 @@
 ###Get all volumes ID after clone   
     - name: Get volume ID with clone
       set_fact:
-        listvolumeid: "{{ listvolumeid | default([]) + [ sf.name ] }}"
+        listvolumeid: "{{ listvolumeid | default([]) + [ sf.volumeID ] }}"
       with_items: "{{ listvolume.json.result.volumes }}"
+      when: sf.name is match("clone*")
       loop_control:
         loop_var: sf
 
