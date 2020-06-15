@@ -10,7 +10,6 @@
 
   vars_files:
     - vars.yaml
-    - lun_clone.yaml
 
   vars:
     login: &dclogin
@@ -48,8 +47,8 @@
 
 ## Comment task "Map Clone LUNs to IGROUP" incase using NAS
     - name: Map Clone LUNs to IGROUP
-      # include_vars:
-      #   file: lun_clone.yaml
+      include_vars:
+        file: lun_clone.yaml
       set_fact: ontap_initiators={{ ontap_initiators }}
     - include_tasks: ontap_lun_map.yaml
       with_items: "{{ ontap_cloneluns }}"
