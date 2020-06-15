@@ -1,25 +1,43 @@
 ---
 ###Get List SnapShot
-- name: Get List Snapshot
-  uri:
-    url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
-    method: POST
-    return_content: yes
-    body: >
-      {
-      "method": "ListSnapshots",
-      "params": {
-      "volumeID": "{{ item }}"
-      },
-      "id" : 1
-      }
-    body_format: json
-    validate_certs: no
-  register: listsnapshot
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
 
-###Print SnapShot Result
-- name: msg SnapShost
-  debug:
-    msg: "{{ listsnapshot.json.result.snapshots }}"
+  vars_files:
+    - vars.yaml
+
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername }}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
+
+  tasks:
+    - name: Get List Snapshot
+      uri:
+        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        method: POST
+        return_content: yes
+        body: >
+          {
+          "method": "ListSnapshots",
+          "params": {
+          "volumeID": "{{ item }}"
+          },
+          "id" : 1
+          }
+        body_format: json
+        validate_certs: no
+      register: listsnapshot
+
+    ###Print SnapShot Result
+    - name: msg SnapShost
+      debug:
+        msg: "{{ listsnapshot.json.result.snapshots }}"
 
 ...
