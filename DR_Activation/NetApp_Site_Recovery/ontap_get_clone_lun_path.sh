@@ -5,9 +5,10 @@
 ontap_drhostname=`cat vars.yaml | shyaml get-value ontap_drhostname`
 ontap_drusername=`cat vars.yaml | shyaml get-value ontap_drusername`
 ontap_drvserver=`cat vars.yaml | shyaml get-value ontap_drvserver`
+ontap_cloneprefix=`cat vars.yaml | shyaml get-value ontap_cloneprefix`
 
 # Get clone LUNs and export to lun_clone.list
-ssh $ontap_drusername@$ontap_drhostname "lun show -vserver $ontap_drvserver -path /vol/clone*" > lun_clone.list
+ssh $ontap_drusername@$ontap_drhostname "lun show -vserver $ontap_drvserver -path /vol/clone*" | grep $ontap_cloneprefix > lun_clone.list
 
 # Create loop following no. of LUNs clone
 FILEIN=lun_clone.list
