@@ -20,7 +20,7 @@
   debug:
     msg: "{{ listsnapshot.json.result.snapshots }}"
 
-- name: TEST
+- name: Get Newest Snapshot ID
   set_fact:
     listsnapshotid: "{{ listsnapshotid | default([]) + [ ntap.snapshotID ] }}"
   with_items: "{{ listsnapshot.json.result.snapshots }}"

@@ -25,8 +25,8 @@
     # - name: debug
     #   debug:
     #     msg: "{{ item.sfvol}}"
-    #   loop: "{{ sf_volumes }}"
 
+    #   Update Destination Volumes on Element
     - name: Update Destination Volumes on Element
       uri: 
         url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
@@ -47,23 +47,10 @@
         validate_certs: no
       with_items: "{{ sf_volumes }}"
 
+    #   Create Clone Volumes on Element
+    - name: Create Clone Volumes
+      include_tasks: solidfire_clone_snapshot.yaml
+      with_items: "{{ sf_volumes }}"
 
-    - name: Update Destination Volumes on Element
-      uri: 
-        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
-        method: POST
-        return_content: yes
-        body: >
-          {
-            "method": "CloneVolume",
-            "params": {
-            "volumeID": 21,
-            "name": "test2",
-            "access": "readWrite",
-            "snapshotName": "snapmirror.d41506db-e6d2-e347-90e9-03000a2c0d33_0.2020-06-12_061732",
-            "enableSnapMirrorReplication": false
-          }
-        body_format: json
-        validate_certs: no
 
 ...
