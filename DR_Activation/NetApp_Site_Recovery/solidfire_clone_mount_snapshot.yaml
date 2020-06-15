@@ -17,10 +17,10 @@
     validate_certs: no
   register: listsnapshot
 
-# ###Print SnapShot Result
-# - name: msg SnapShost
-#   debug:
-#     msg: "{{ listsnapshot.json.result.snapshots }}"
+###Print SnapShot Result
+- name: msg SnapShost
+  debug:
+    msg: "{{ listsnapshot.json.result.snapshots }}"
 
 ###Get SnapShot ID for each Volume
 - name: Get SnapShot ID
