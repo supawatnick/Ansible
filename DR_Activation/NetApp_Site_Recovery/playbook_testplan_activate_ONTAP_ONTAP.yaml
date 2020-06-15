@@ -41,6 +41,10 @@
       set_fact: ontap_cloneprefix={{ ontap_cloneprefix }}
     - include_tasks: ontap_create_flexclone.yaml
 
+## Get Clone LUNs path at DR
+    - name: Get Clone LUNs path at DR
+      shell: ./ontap_get_clone_lun_path.sh
+
 ## Comment task "Map Clone LUNs to IGROUP" incase using NAS
     - name: Map Clone LUNs to IGROUP
       set_fact: ontap_initiators={{ ontap_initiators }}
