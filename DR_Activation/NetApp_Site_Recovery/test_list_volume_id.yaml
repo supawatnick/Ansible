@@ -47,6 +47,7 @@
       with_items: "{{ listvolume.json.result.volumes }}"
       loop_control:
         loop_var: sf
+        when: sf.name = "clone + sf.name"
 
     - name: list Volume ID
       debug:
