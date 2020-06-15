@@ -32,12 +32,11 @@
       register: luninfo
 
 
-# # #Debug1
-#     - name: print volume and lun info
-#       debug:
-#         msg: "{{ luninfo.ontap_info.lun_info }}"
-#       loop: "{{ luninfo.ontap_info.lun_info }}"
-#       register: luninfo2"
+# #Debug1
+    - name: print volume and lun info
+      debug:
+        msg: "{{ luninfo.ontap_info.lun_info }}"
+
 
     - name: "Display LUN path"
       debug:
