@@ -1,5 +1,5 @@
 ---
-###Get List SnapShot
+###Get all Snapshots on Volume
 - name: Get List Snapshot
   uri:
     url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
@@ -17,12 +17,12 @@
     validate_certs: no
   register: listsnapshot
 
-###Print SnapShot Result
-- name: msg SnapShost
-  debug:
-    msg: "{{ listsnapshot.json.result.snapshots }}"
+# ###Debug1
+# - name: msg SnapShost
+#   debug:
+#     msg: "{{ listsnapshot.json.result.snapshots }}"
 
-###Get SnapShot ID for each Volume
+###Get all Snapshot ID
 - name: Get SnapShot ID
   set_fact:
     listsnapshotid: "{{ listsnapshotid | default([]) + [ ntap.snapshotID ] }}"
@@ -30,14 +30,15 @@
   loop_control:
     loop_var: ntap
 
-###List max SnapShotID and set_fact to snapshotid
-- name: Set Snapshot ID
+###Set_fact to highest snapshot ID on each volume
+- name: Set_Fact to Snapshot ID
   set_fact:
     snapshotid: "{{ listsnapshotid | max }}"
 
-# ###List max SnapShotID after set_fact
-# - debug:
-#     msg: "{{ snapshotid }}"
+###List higest Snapshot ID
+- name: List Clone SnapShot ID on Volume
+- debug:
+    msg: "{{ snapshotid }}"
 
 ###Create clone volume from snapshotid
 - name: Create Clone
@@ -82,6 +83,7 @@
 #   debug:
 #     msg: "{{ listvolume.json.result.volumes }}"
 
+
 ###Get all volumes ID after clone
 - name: Get volume ID with clone
   set_fact:
@@ -95,6 +97,8 @@
 #   debug:
 #     msg: "{{ listvolumeid }}"
 
+
+
 ###Set fact to max volume ID
 - name: Set Volume ID
   set_fact:
@@ -103,6 +107,8 @@
 # ###Print max volume ID after set_fact
 # - debug:
 #     msg: "{{ volumeid }}"
+
+
 
 ###Map Clone Volume to Access Group
 - name: Map Clone Volume to Access Group
