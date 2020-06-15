@@ -35,7 +35,7 @@
 ##Debug1
     - name: print volume and lun info
       debug:
-        msg: "{{ lun_info.json.ontap_info.lun_info }}"
+        msg: "{{ lun_info }}"
 
 
     # ##Get all volumes ID after clone   
