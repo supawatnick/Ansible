@@ -21,9 +21,7 @@
 
 
   tasks:
-
     - name: Get volume
-      tasks:
       uri: 
         url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
         method: POST
