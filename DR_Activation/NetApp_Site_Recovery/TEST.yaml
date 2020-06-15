@@ -29,6 +29,7 @@
           nfs_ro: no
           esxi_hostname: '{{ item.0 }}'
           state: present
+          validate_certs: no
       delegate_to: localhost
       with_nested:
         - "{{ inventory_drhostname }}"
