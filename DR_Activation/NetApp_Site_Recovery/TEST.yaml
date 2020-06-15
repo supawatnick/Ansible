@@ -32,7 +32,7 @@
       register: ontap_info
 
     - name: print volume and lun info
-    - debug:
+      debug:
         msg: "{{ ontap_info }}"
 
 ...
