@@ -89,7 +89,6 @@
   with_items: "{{ listvolume.json.result.volumes }}"
   loop_control:
     loop_var: sf
-    when: sf.name = "clone + sf.volumeID"
 
 ###Get all volumes ID after clone
 - name: list Volume ID

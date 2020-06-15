@@ -49,7 +49,7 @@
 
     #   Create Clone Volumes on Element
     - name: Create Clone Volumes
-      include_tasks: solidfire_clone_snapshot.yaml
+      include_tasks: solidfire_clone_mount_snapshot.yaml
       with_items: "{{ sf_volumes }}"
 
 
