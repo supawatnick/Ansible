@@ -53,8 +53,22 @@
       debug:
         msg: "{{ listvolumeid }}"
 
+###Delete Clone Volumes
+    - name: Delete Clone Volumes
+      uri: 
+        url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+        method: POST
+        return_content: yes
+        body: >
+          {
+            "method": "DeleteVolumes",
+            "params": {
+              "volumeIDs": {{ item }}
+              ]
+            }
+          }
+        body_format: json
+        validate_certs: no
+      with_items: "{{ listvolumeid }}"
+
 ...
-# ###Get all volumes ID after clone
-# - name: list Volume ID
-#   debug:
-#     msg: "{{ listvolumeid }}"
