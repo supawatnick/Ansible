@@ -1,6 +1,11 @@
 ### Install shyaml >> sudo pip install shyaml
 ### Install VMware lib >> sudo pip install pyvmomi
 ### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+### Install VMware Collection >> ansible-galaxy collection install community.vmware
+### yum update -y && yum install epel-release -y
+### yum install python3 -y &&  pip3 install ansible
+### sudo pip3 install netapp-lib solidfire-sdk-python requests && ansible-galaxy collection install netapp.ontap netapp.elementsw -p /usr/share/ansible/collections 
+### sudo chmod +rx /usr/share/ansible/collections
 
 ---
 - hosts: localhost
