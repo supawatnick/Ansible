@@ -27,8 +27,8 @@
         https: true
         validate_certs: false
         gather_subset:
-          - "volume_info"
- #         - "lun_info"
+          # - "volume_info"
+          - "lun_info"
       register: luninfo
 
 
