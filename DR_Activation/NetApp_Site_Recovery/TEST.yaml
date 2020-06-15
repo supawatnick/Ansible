@@ -1,6 +1,3 @@
-### Install shyaml >> sudo pip install shyaml
-### Install VMware lib >> sudo pip install pyvmomi
-### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
 
 ---
 - hosts: localhost
@@ -19,8 +16,9 @@
       https: true
       validate_certs: false
 
-
   tasks:
+
+###Get all volumes after clone
     - name: Get volume
       uri: 
         url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
@@ -37,32 +35,21 @@
         validate_certs: no
       register: listvolume
 
-    - name: Get Volume
-      debug:
-        msg: "{{ listvolume.json.result.volumes }}"
-
-    - name: Get volume name with clone
+###Get all volumes ID after clone   
+    - name: Get volume ID with clone
       set_fact:
-        listvolumeid: "{{ listvolumeid | default([]) + [ sf.name ] }}"
+        listvolumeid: "{{ listvolume | default([]) + [ sf.volumeID ] }}"
+      when: sf.name is match("clone*")
       with_items: "{{ listvolume.json.result.volumes }}"
       loop_control:
         loop_var: sf
-        when: sf.name = "clone + sf.name"
 
-    - name: list Volume ID
+    - name: print clone ID
       debug:
         msg: "{{ listvolumeid }}"
 
-    # - name: Get SnapShot ID
-    #   set_fact:
-    #     listvolumeid: "{{ listvolumeid | default([]) + [ sf.volumeID ] }}"
-    #   with_items: "{{ listvolume.json.result.volumes }}"
-    #   loop_control:
-    #     loop_var: sf
-
-    # - name: list Volume ID
-    #   debug:
-    #     msg: "{{ listvolumeid }}"
-
-...    
-
+...
+# ###Get all volumes ID after clone
+# - name: list Volume ID
+#   debug:
+#     msg: "{{ listvolumeid }}"

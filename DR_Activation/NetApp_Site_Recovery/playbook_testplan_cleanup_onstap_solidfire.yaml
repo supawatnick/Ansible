@@ -1,0 +1,67 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+### Install VMware Collection >> ansible-galaxy collection install community.vmware
+
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - vars.yaml
+    - current_ds.yaml
+
+  vars:
+    login: &drlogin
+      hostname: "{{ ontap_drhostname }}"
+      username: "{{ ontap_drusername }}"
+      password: "{{ ontap_drpassword }}"
+      https: true
+      validate_certs: false
+  
+  tasks:
+    ##Power Off VMs
+    - name: Set the state of a virtual machine to poweroff
+      vmware_guest_powerstate:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        name: "{{ item }}"
+        state: powered-off
+      with_items: "{{ vm_drname }}"
+      delegate_to: localhost
+      register: deploy
+    
+    ##Unregister VMs
+    - name: Remove a virtual machine
+      vmware_guest:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ vm_drname }}"
+      delegate_to: localhost
+
+    ##Unmount and Remove Clone Datastores
+    - name: Unmount and Remove Clone Datastores from a ESXi
+      vmware_host_datastore:
+        hostname: "{{ vcenter_drhostname }}"
+        username: "{{ vcenter_drusername }}"
+        password: "{{ vcenter_drpassword }}"
+        validate_certs: no
+        datastore_name: "{{ item.1 }}"
+        esxi_hostname: "{{ item.0 }}"
+        state: absent
+      with_nested:
+        - "{{ inventory_drhostname }}"
+        - "{{ clone_datastore }}"
+      delegate_to: localhost
+
+   ##List all Volumes in Element OS
+    - name: List all Volumes in Element OS
+    - included
