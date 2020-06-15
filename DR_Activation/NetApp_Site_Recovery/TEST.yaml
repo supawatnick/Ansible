@@ -29,13 +29,13 @@
         gather_subset:
 #          - "volume_info"
           - "lun_info"
-      register: lun_info
+      register: luninfo
 
 
 ##Debug1
     - name: print volume and lun info
       debug:
-        msg: "{{ lun_info }}"
+        msg: "{{ luninfo.ontap_info }}"
 
 
     # ##Get all volumes ID after clone   
