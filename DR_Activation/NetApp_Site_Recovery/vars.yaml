@@ -25,7 +25,7 @@ ontap_drvolumes:
  - svm1_lun4_vol_dest
  - svm1_lun5_vol_dest
 ontap_initiators: vmwaredr
-ontap_lunid: 10
+ontap_lunid: 100
 
 ###ONTAP Clone
 ontap_cloneprefix: ansible_
