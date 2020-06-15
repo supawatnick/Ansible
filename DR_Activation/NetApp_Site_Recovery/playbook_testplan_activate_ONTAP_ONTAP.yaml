@@ -45,10 +45,14 @@
     - name: Get Clone LUNs path at DR
       shell: ./ontap_get_clone_lun_path.sh
 
-## Comment task "Map Clone LUNs to IGROUP" incase using NAS
-    - name: Map Clone LUNs to IGROUP
+## Load var lun_clone.yaml
+    - name: Include var lun_clone.yaml
       include_vars:
         file: lun_clone.yaml
+        # name: stuff
+
+## Comment task "Map Clone LUNs to IGROUP" incase using NAS
+    - name: Map Clone LUNs to IGROUP
       set_fact: ontap_initiators={{ ontap_initiators }}
     - include_tasks: ontap_lun_map.yaml
       with_items: "{{ ontap_cloneluns }}"
