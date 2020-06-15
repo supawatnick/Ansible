@@ -36,7 +36,7 @@
     - name: print volume and lun info
       debug:
         msg: " {{ item }} "
-      with_items: " {{ luninfo.ontap_info.lun_info }}"
+      with_items: " {{ luninfo.json.ontap_info.lun_info }}"
 
 
 # ##Deubg2
