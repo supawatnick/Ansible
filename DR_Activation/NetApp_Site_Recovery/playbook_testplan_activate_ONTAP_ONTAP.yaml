@@ -49,7 +49,6 @@
     - name: Include var lun_clone.yaml
       include_vars:
         file: lun_clone.yaml
-        # name: stuff
 
 ## Comment task "Map Clone LUNs to IGROUP" incase using NAS
     - name: Map Clone LUNs to IGROUP

@@ -27,14 +27,8 @@ ontap_drvolumes:
 ontap_initiators: vmwaredr
 ontap_lunid: 10
 
-###Clone
+###ONTAP Clone
 ontap_cloneprefix: clone_
-# ontap_cloneluns:
-#  - /vol/clone_svm1_lun1_vol_dest/svm1_lun1
-#  - /vol/clone_svm1_lun2_vol_dest/svm1_lun2
-#  - /vol/clone_svm1_lun3_vol_dest/svm1_lun3
-#  - /vol/clone_svm1_lun4_vol_dest/svm1_lun4
-#  - /vol/clone_svm1_lun5_vol_dest/svm1_lun5
 
 ## ESX DR
 esx_drhostname: 192.168.0.103
