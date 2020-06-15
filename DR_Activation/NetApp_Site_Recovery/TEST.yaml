@@ -39,7 +39,6 @@
     - name: Get volume ID with clone
       set_fact:
         listvolumeid: "{{ listvolume | default([]) + [ sf.name ] }}"
-      when: sf.name is match("clone*")
       with_items: "{{ listvolume.json.result.volumes }}"
       loop_control:
         loop_var: sf
