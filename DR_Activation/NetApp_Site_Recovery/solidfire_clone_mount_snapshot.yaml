@@ -17,10 +17,10 @@
     validate_certs: no
   register: listsnapshot
 
-###Print SnapShot Result
-- name: msg SnapShost
-  debug:
-    msg: "{{ listsnapshot.json.result.snapshots }}"
+# ###Print SnapShot Result
+# - name: msg SnapShost
+#   debug:
+#     msg: "{{ listsnapshot.json.result.snapshots }}"
 
 ###Get SnapShot ID for each Volume
 - name: Get SnapShot ID
@@ -35,9 +35,9 @@
   set_fact:
     snapshotid: "{{ listsnapshotid | max }}"
 
-###List max SnapShotID after set_fact
-- debug:
-    msg: "{{ snapshotid }}"
+# ###List max SnapShotID after set_fact
+# - debug:
+#     msg: "{{ snapshotid }}"
 
 ###Create clone volume from snapshotid
 - name: Create Clone
@@ -77,10 +77,10 @@
     validate_certs: no
   register: listvolume
 
-###Get volumes after clone
-- name: Get Volume
-  debug:
-    msg: "{{ listvolume.json.result.volumes }}"
+# ###Get volumes after clone
+# - name: Get Volume
+#   debug:
+#     msg: "{{ listvolume.json.result.volumes }}"
 
 ###Get all volumes ID after clone
 - name: Get volume ID with clone
@@ -90,19 +90,19 @@
   loop_control:
     loop_var: sf
 
-###Get all volumes ID after clone
-- name: list Volume ID
-  debug:
-    msg: "{{ listvolumeid }}"
+# ###Get all volumes ID after clone
+# - name: list Volume ID
+#   debug:
+#     msg: "{{ listvolumeid }}"
 
 ###Set fact to max volume ID
 - name: Set Volume ID
   set_fact:
     volumeid: "{{ listvolumeid | max }}"
 
-###Print max volume ID after set_fact
-- debug:
-    msg: "{{ volumeid }}"
+# ###Print max volume ID after set_fact
+# - debug:
+#     msg: "{{ volumeid }}"
 
 ###Map Clone Volume to Access Group
 - name: Map Clone Volume to Access Group
@@ -115,7 +115,7 @@
       {
         "method": "AddVolumesToVolumeAccessGroup",
         "params": {
-          "volumeAccessGroupID": "{{ sf_accessgroup }},
+          "volumeAccessGroupID": "{{ sf_accessgroup }}",
           "volumes": [
             "{{ volumeid }}"
           ]
