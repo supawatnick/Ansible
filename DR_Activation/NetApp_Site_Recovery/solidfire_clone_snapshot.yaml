@@ -16,11 +16,11 @@
     validate_certs: no
   register: listsnapshot
 
-- name: Get Newest Snapshot
+- name: msg SnapShost
   debug:
     msg: "{{ listsnapshot.json.result.snapshots }}"
 
-- name: Get Newest Snapshot ID
+- name: Get SnapShot ID
   set_fact:
     listsnapshotid: "{{ listsnapshotid | default([]) + [ ntap.snapshotID ] }}"
   with_items: "{{ listsnapshot.json.result.snapshots }}"
