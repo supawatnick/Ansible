@@ -32,6 +32,6 @@
       delegate_to: localhost
       with_nested:
         - "{{ inventory_drhostname }}"
-        - "{{ nfs_vol1_dest }}"
+        - "{{ ontap_drvolumes }}"
 
 ...
