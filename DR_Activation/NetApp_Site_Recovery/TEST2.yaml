@@ -43,6 +43,7 @@
         body_format: json
         validate_certs: no
       register: listsnapshot
+      with_items: "{{ sf_volumes }}"
 
     ###Print SnapShot Result
     - name: msg SnapShost
