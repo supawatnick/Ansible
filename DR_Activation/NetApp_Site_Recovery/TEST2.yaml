@@ -1,5 +1,8 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+
 ---
-###Get List SnapShot
 - hosts: localhost
   gather_facts: false
   collections:
@@ -18,7 +21,13 @@
 
 
   tasks:
-    - name: Get List Snapshot
+    # Test Debug
+    # - name: debug
+    #   debug:
+    #     msg: "{{ item.sfvol}}"
+
+##   Update Destination Volumes on Element
+    - name: Update Destination Volumes on Element
       uri:
         url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
         method: POST
@@ -40,4 +49,34 @@
       debug:
         msg: "{{ listsnapshot.json.result.snapshots }}"
 
+###Get SnapShot ID for each Volume
+
+# ##   Create Clone Volumes on Element
+#     - name: Create Clone Volumes
+#       include_tasks: solidfire_clone_mount_snapshot.yaml
+#       with_items: "{{ sf_volumes }}"
+
+# ## Comment task "Resignature and mount VMFS" incase using NAS
+#     - name: Resignature and mount VMFS
+#       shell: ./vmware_resignature_mount_vmfs.sh >> ./vmware_resignature_mount_vmfs.log
+
+# ## Comment task "Rescan HBA all ESXi in DR Cluster" incase using NAS
+#     - name: Rescan HBA all ESXi in DR Cluster
+#       vmware_host_scanhba:
+#           hostname: "{{ vcenter_drhostname }}"
+#           username: "{{ vcenter_drusername }}"
+#           password: "{{ vcenter_drpassword }}"
+#           esxi_hostname: "{{ item }}"
+#           refresh_storage: true
+#           validate_certs: no
+#       with_items: "{{ esx_drlist }}"
+#       delegate_to: localhost
+
+# ## Register VMs
+#     - name: Register VMs
+#       shell: ./vmware_register_vm.sh >> ./vmware_register_vm.sh.log
+
+# ## Poweron VMs
+#     - name: Poweron VMs
+#       shell: ./vmware_poweron_vm.sh >> ./vmware_poweron_vm.log
 ...
