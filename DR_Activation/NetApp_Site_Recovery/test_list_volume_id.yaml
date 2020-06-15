@@ -41,9 +41,9 @@
       debug:
         msg: "{{ listvolume.json.result.volumes }}"
 
-    - name: Get SnapShot ID
+    - name: Get volume name with clone
       set_fact:
-        listvolumeid: "{{ listvolumeid | default([]) + [ sf.volumeID ] }}"
+        listvolumeid: "{{ listvolumeid | default([]) + [ sf.name ] }}"
       with_items: "{{ listvolume.json.result.volumes }}"
       loop_control:
         loop_var: sf
@@ -51,6 +51,17 @@
     - name: list Volume ID
       debug:
         msg: "{{ listvolumeid }}"
+
+    # - name: Get SnapShot ID
+    #   set_fact:
+    #     listvolumeid: "{{ listvolumeid | default([]) + [ sf.volumeID ] }}"
+    #   with_items: "{{ listvolume.json.result.volumes }}"
+    #   loop_control:
+    #     loop_var: sf
+
+    # - name: list Volume ID
+    #   debug:
+    #     msg: "{{ listvolumeid }}"
 
 ...    
 
