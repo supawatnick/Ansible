@@ -35,8 +35,8 @@
 #Debug1
     - name: print volume and lun info
       debug:
-        msg: "{{ item }}"
-      with_items: "{{ luninfo.ontap_info.lun_info.svm1:/vol/ONTAP_DP/ONTAP-DP.path }}"
+        msg: " {{ luninfo.ontap_info.lun_info.svm1:/vol/ONTAP_DP/ONTAP-DP }} "
+
 
 # ##Deubg2
 #     - name: Set Fact
