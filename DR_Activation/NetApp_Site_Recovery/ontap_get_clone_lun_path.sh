@@ -11,7 +11,7 @@ ssh $ontap_drusername@$ontap_drhostname "lun show -vserver $ontap_drvserver -pat
 
 # Create loop following no. of LUNs clone
 FILEIN=lun_clone.list
-LOOPS=`wc -l $FILEIN |awk '{print $2}'`
+LOOPS=`wc -l $FILEIN |awk '{print $1}'`
 echo Found $LOOPS Clone LUN
 COUNT=1
 
