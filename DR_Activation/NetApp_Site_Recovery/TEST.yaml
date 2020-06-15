@@ -32,11 +32,11 @@
       register: luninfo
 
 
-##Debug1
-    # - name: print volume and lun info
-    #   debug:
-    #     msg: "{{ item }}"
-    #   with_items: "{{  luninfo.ontap_info.lun_info }}"
+#Debug1
+    - name: print volume and lun info
+      debug:
+        msg: "{{ item }}"
+      with_items: "{{  luninfo.ontap_info.lun_info }}"
 
 ##Deubg2
     - name: Set Fact
@@ -47,11 +47,11 @@
       loop_control:
         loop_var: ntap
 
-# ##Deubg2
-    - name: HELLO
-      debug:
-        msg: "{{ item }}"
-      with_items: "{{  listlunpath }}"
+# # ##Deubg2
+#     - name: HELLO
+#       debug:
+#         msg: "{{ item }}"
+#       with_items: "{{  listlunpath }}"
 
 
 
