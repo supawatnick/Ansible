@@ -33,31 +33,25 @@
 
 
 ##Debug1
-    - name: print volume and lun info
-      debug:
-        msg: "{{ item }}"
-      with_items: "{{  luninfo.ontap_info.lun_info }}"
-
-##Debug1
     # - name: print volume and lun info
     #   debug:
     #     msg: "{{ item }}"
     #   with_items: "{{  luninfo.ontap_info.lun_info }}"
 
-# ##Deubg2
-#     - name: Set Fact
-#       set_fact:
-#         listlunpath: "{{ listlunpath | default([]) + [ ntap.path ] }}"
-#       with_items: "{{ luninfo.ontap_info.lun_info }}"
-#       when: ntap.path is match("/vol/clone*")
-#       loop_control:
-#         loop_var: ntap
+##Deubg2
+    - name: Set Fact
+      set_fact:
+        listlunpath: "{{ listlunpath | default([]) + [ ntap.path ] }}"
+      with_items: "{{ luninfo.ontap_info.lun_info }}"
+#      when: ntap.path is match("/vol/clone*")
+      loop_control:
+        loop_var: ntap
 
 # ##Deubg2
-#     - name: HELLO
-#       debug:
-#         msg: "{{ item }}"
-#       with_items: "{{  listlunpath }}"
+    - name: HELLO
+      debug:
+        msg: "{{ item }}"
+      with_items: "{{  listlunpath }}"
 
 
 
