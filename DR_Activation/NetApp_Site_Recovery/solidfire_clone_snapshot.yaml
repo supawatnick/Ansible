@@ -1,4 +1,5 @@
 ---
+###Get List SnapShot
 - name: Get List Snapshot
   uri:
     url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
@@ -16,10 +17,12 @@
     validate_certs: no
   register: listsnapshot
 
+###Print SnapShot Result
 - name: msg SnapShost
   debug:
     msg: "{{ listsnapshot.json.result.snapshots }}"
 
+###Get SnapShot ID for each Volume
 - name: Get SnapShot ID
   set_fact:
     listsnapshotid: "{{ listsnapshotid | default([]) + [ ntap.snapshotID ] }}"
@@ -27,13 +30,16 @@
   loop_control:
     loop_var: ntap
 
+###List max SnapShotID and set_fact to snapshotid
 - name: Set Snapshot ID
   set_fact:
     snapshotid: "{{ listsnapshotid | max }}"
 
+###List max SnapShotID after set_fact
 - debug:
     msg: "{{ snapshotid }}"
 
+###Create clone volume from snapshotid
 - name: Create Clone
   uri:
     url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
@@ -49,6 +55,71 @@
           "access": "readWrite",
           "snapshotID": {{ snapshotid }},
           "enableSnapMirrorReplication": false
+        }
+      }
+    body_format: json
+    validate_certs: no
+
+###Get volumes after clone
+- name: Get volume
+  uri: 
+    url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    method: POST
+    return_content: yes
+    body: >
+      {
+        "method": "ListVolumes",
+        "params": {
+          "includeVirtualVolumes": false
+        }
+      }
+    body_format: json
+    validate_certs: no
+  register: listvolume
+
+###Get volumes after clone
+- name: Get Volume
+  debug:
+    msg: "{{ listvolume.json.result.volumes }}"
+
+###Get all volumes ID after clone
+- name: Get volume ID with clone
+  set_fact:
+    listvolumeid: "{{ listvolumeid | default([]) + [ sf.volumeID ] }}"
+  with_items: "{{ listvolume.json.result.volumes }}"
+  loop_control:
+    loop_var: sf
+    when: sf.name = "clone + sf.volumeID"
+
+###Get all volumes ID after clone
+- name: list Volume ID
+  debug:
+    msg: "{{ listvolumeid }}"
+
+###Set fact to max volume ID
+- name: Set Volume ID
+  set_fact:
+    volumeid: "{{ listvolumeid | max }}"
+
+###Print max volume ID after set_fact
+- debug:
+    msg: "{{ volumeid }}"
+
+###Map Clone Volume to Access Group
+- name: Map Clone Volume to Access Group
+  uri:
+    url: "https://{{ sfuser }}:{{ sfpassword }}@{{ sfhostname }}/json-rpc/11.0/"
+    method: POST
+    status_code: 200
+    return_content: yes
+    body: >
+      {
+        "method": "AddVolumesToVolumeAccessGroup",
+        "params": {
+          "volumeAccessGroupID": "{{ sf_accessgroup }},
+          "volumes": [
+            "{{ volumeid }}"
+          ]
         }
       }
     body_format: json
