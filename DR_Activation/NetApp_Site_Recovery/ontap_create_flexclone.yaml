@@ -12,6 +12,7 @@
     name: "{{ ontap_cloneprefix + item }}"
     space_reserve: none
     parent_snapshot: "{{ ontap_dcsnapshot }}"
+    junction_path: "{{ '/' + ontap_cloneprefix + item }}"
   async: 300
   poll: 0
   register: _create_instances
