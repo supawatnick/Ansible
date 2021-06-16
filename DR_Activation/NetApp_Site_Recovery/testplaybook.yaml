@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - vars.yaml
+
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername }}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+    - name: update snapmirror
+    - include_tasks: ontap_snapmirror_update.yaml
+
+    - name: break SnapMirror
+    - include_tasks: ontap_breakmirror.yaml

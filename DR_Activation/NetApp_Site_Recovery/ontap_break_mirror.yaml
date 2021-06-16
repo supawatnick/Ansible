@@ -1,0 +1,13 @@
+---
+  - name: Break Mirror Relation
+    na_ontap_snapmirror:
+      state: present
+      relationship_state: broken
+      destination_path: {{ item.destpath }}
+      source_hostname: "{{ source_hostname }}"
+      hostname: 172.16.13.211
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+    loop: {{ Relation }}
