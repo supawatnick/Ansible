@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  collections:
+    - netapp.ontap
+  name: Volume Action
+  vars:
+    hostname: 172.16.13.211
+    username: admin
+    password: Netapp1!
+    vserver: ocpdemo
+    aggr: aggrDR
+    vol_name: ansiblertest
+  tasks:
+  - name: Volume Create
+    na_ontap_volume:
+      state: present
+      name: "{{ vol_name }}"
+      vserver: "{{ vserver }}"
+      aggregate_name: "{{ aggr }}"
+      size: 10
+      size_unit: gb
+      policy: default
+      junction_path: "/{{ vol_name }}"
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      https: true
+      validate_certs: false
+
+    - name: Update SnapMirror
+    na_ontap_snapmirror:
+        state: present
+        destination_path: ocpdemo:ansible_test_1_dest
+        update: yes
+        hostname: 172.16.13.211
+        username: admin
+        password: Netapp1!
+        https: true
+        validate_certs: false

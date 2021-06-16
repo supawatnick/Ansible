@@ -15,6 +15,13 @@ ontap_dcvolumes:
   - ansible_test_1
   - ansible_test_2
 
+##SnapMirror Relation
+Relation:
+  - sourcepath: ocpdemo:ansible_test_1
+    destpath: ocpdemo:ansible_test_1_dest
+  - sourcepath: ocpdemo:ansible_test_2
+    destpath: ocpdemo:ansible_test_2_dest
+
 ##DR
 ontap_drhostname: 172.16.13.211
 ontap_drusername: admin

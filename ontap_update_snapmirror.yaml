@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+  vars_files:
+    - vars.yaml
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername }}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+  tasks:
+  - name: Update SnapMirror
+    # debug:
+    #  msg: "{{ item.sourcepath }},{{ item.destpath }}"
+    na_ontap_snapmirror:
+      state: present
+      source_path: "{{ item.sourcepath }}"
+      destination_path: "{{ item.destpath }}"
+      update: yes
+      hostname: 172.16.13.211
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+    loop: "{{ Relation }}"
+
