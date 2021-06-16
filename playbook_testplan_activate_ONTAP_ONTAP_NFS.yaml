@@ -1,0 +1,76 @@
+### Install shyaml >> sudo pip install shyaml
+### Install VMware lib >> sudo pip install pyvmomi
+### Install NetApp lib >> sudo pip install netapp-lib solidfire-sdk-python requests
+### Install VMware Collection >> ansible-galaxy collection install community.vmware
+### yum update -y && yum install epel-release -y
+### yum install python3 -y &&  pip3 install ansible
+### sudo pip3 install netapp-lib solidfire-sdk-python requests && ansible-galaxy collection install netapp.ontap netapp.elementsw -p /usr/share/ansible/collections 
+### sudo chmod +rx /usr/share/ansible/collections
+
+
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+
+  vars_files:
+    - vars.yaml
+
+  vars:
+    login: &dclogin
+      hostname: "{{ ontap_dchostname }}"
+      username: "{{ ontap_dcusername }}"
+      password: "{{ ontap_dcpassword }}"
+      https: true
+      validate_certs: false
+
+  tasks:
+## Perform SnapShot Update at DC and tagged label with "ansible_snapshot"
+    - name: Create Snapshot at DC
+      na_ontap_cg_snapshot:
+        state: present
+        vserver: "{{ ontap_dcvserver }}"
+        snapshot: "{{ ontap_dcsnapshot }}"
+        volumes: "{{ ontap_dcvolumes }}"
+        snapmirror_label: "{{ ontap_dcsnapshot }}"
+        <<: *dclogin
+
+## Perform SnapMirror Update at DR ##Ansible 2.9 didn't support SnapMirror update process##
+    - name: Perform snapmirror update
+      shell: ./ontap_snapmirror_update.sh
+      register: out
+    - debug: var=out.stdout_lines      
+
+## Perform FlexClone at DR
+    - name: Set ClonePrefix Clone
+      set_fact: ontap_cloneprefix={{ ontap_cloneprefix }}
+    - include_tasks: ontap_create_flexclone.yaml
+
+## Mount NFS volumes to ESXi-DR
+    - name: Mount NFS datastores to ESXi
+      vmware_host_datastore:
+          hostname: '{{ vcenter_drhostname }}'
+          username: '{{ vcenter_drusername }}'
+          password: '{{ vcenter_drpassword }}'
+          datastore_name: '{{ item.1 }}'
+          datastore_type: nfs
+          nfs_server: '{{ ontap_drnfsserver }}'
+          nfs_path: '{{ "/" + item.1 }}'
+          nfs_ro: no
+          esxi_hostname: '{{ item.0 }}'
+          state: present
+          validate_certs: no
+      delegate_to: localhost
+      with_nested:
+        - "{{ inventory_drhostname }}"
+        - "{{ ontap_drvolumes }}"
+
+## Register VMs (by shellscript) ##Ansible 2.9 didn't support Virtual Machine Register process##
+    - name: Register VMs
+      shell: ./vmware_register_vm.sh >> ./vmware_register_vm.sh.log
+
+## Poweron VMs
+    - name: Poweron VMs
+      shell: ./vmware_poweron_vm.sh >> ./vmware_poweron_vm.log
+...

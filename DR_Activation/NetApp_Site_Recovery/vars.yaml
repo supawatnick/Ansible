@@ -1,57 +1,58 @@
 ##DC
-ontap_dchostname: 192.168.0.110
+ontap_dchostname: 172.16.13.211
 ontap_dcusername: admin
 ontap_dcpassword: Netapp1!
 ontap_dcsnapshot: ansible_snapshot
-ontap_dcvserver: svm1
+ontap_dcvserver: ocpdemo
 ontap_dcvolumes:
-   # - vol1_sf
-   # - vol2_sf
-#  - svm1_lun1_vol
-#  - svm1_lun2_vol
-#  - svm1_lun3_vol
-#  - svm1_lun4_vol
-#  - svm1_lun5_vol
-  - nfs_vol1
-  - nfs_vol2
+# - vol1_sf
+# - vol2_sf
+# - svm1_lun1_vol
+# - svm1_lun2_vol
+# - svm1_lun3_vol
+# - svm1_lun4_vol
+# - svm1_lun5_vol
+  - ansible_test_1
+  - ansible_test_2
 
 ##DR
-ontap_drhostname: 192.168.0.110
+ontap_drhostname: 172.16.13.211
 ontap_drusername: admin
 ontap_drpassword: Netapp1!
-ontap_drvserver: svm2
+ontap_drvserver: ocpdemo
 ontap_drvolumes:
 #  - svm1_lun1_vol_dest
 #  - svm1_lun2_vol_dest
 #  - svm1_lun3_vol_dest
 #  - svm1_lun4_vol_dest
 #  - svm1_lun5_vol_dest
-  - nfs_vol1_dest
-  - nfs_vol2_dest
+  - ansible_test_1_dest
+  - ansible_test_2_dest
+
 ontap_initiators: vmwaredr
 ontap_lunid: 100
-ontap_drnfsserver: 192.168.0.222
+ontap_drnfsserver: 172.16.13.37
 
 ###ONTAP Clone
-ontap_cloneprefix: ansible_
+ontap_cloneprefix: ansible_clone_
 
 ## ESX DR
-esx_drhostname: 192.168.0.103
+esx_drhostname: 172.16.13.107
 esx_drusername: root
 esx_drpassword: Netapp1!
 esx_iscsi_hba: vmhba65
 esx_drlist:
- - 192.168.0.103
- - 192.168.0.104
+ - 172.16.13.107
+# - 192.168.0.104
 
 ## vCenter DR
-vcenter_drhostname: vc1.demo.netapp.com
+vcenter_drhostname: 172.16.13.160
 vcenter_drusername: administrator@vsphere.local
 vcenter_drpassword: Netapp1!
 inventory_drhostname:
- - 192.168.0.103
- - 192.168.0.104
-datacenter_drname: NetApp-HCI-Datacenter
+ - 172.16.13.107
+# - 192.168.0.104
+datacenter_drname: SGNICLAB-DR
 vm_drname:
 #  - sf1
 #  - sf2
@@ -60,13 +61,3 @@ vm_drname:
 #  - vm3
 #  - vm4
 #  - vm5
-
-##Element OS
-sfuser: admin
-sfpassword: Netapp1!
-sfhostname: 192.168.0.105
-sf_volumes:
- - 20
- - 21
-sf_accessgroup: 1
-

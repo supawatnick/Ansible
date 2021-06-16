@@ -36,7 +36,7 @@
         snapmirror_label: "{{ ontap_dcsnapshot }}"
         <<: *dclogin
 
-## Perform SnapMirror Update at DR
+## Perform SnapMirror Update at DR ##Ansible 2.9 didn't support SnapMirror update process##
     - name: Perform snapmirror update
       shell: ./ontap_snapmirror_update.sh
       register: out
